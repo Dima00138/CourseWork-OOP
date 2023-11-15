@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MaterialDesignInXamlToolkit-master\**" />
+    <EmbeddedResource Remove="MaterialDesignInXamlToolkit-master\**" />
+    <None Remove="MaterialDesignInXamlToolkit-master\**" />
+    <Page Remove="MaterialDesignInXamlToolkit-master\**" />
+    <None Remove="Resources\Home.png" />
+	  <None Remove="Resources\view-list.png" />
+	  <None Remove="Resources\dots-3.png" />
+	  <!--<None Remove="Resources\arrows.png" />-->
+	  <None Remove="Resources\exit.png" />
+	  <None Remove="Resources\person.png" />
+	  <None Remove="Resources\ticket.png" />
+	  <None Remove="Resources\logo_bzhd.png" />
+	  <None Remove="Resources\logo_bzhd_w.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.100" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Home.png" />
+	  <Resource Include="Resources\view-list.png" />
+	  <Resource Include="Resources\dots-3.png" />
+	  <Resource Include="Resources\exit.png" />
+	  <Resource Include="Resources\person.png" />
+	  <!--<Resource Include="Resources\arrows.png" />-->
+	  <Resource Include="Resources\ticket.png" />
+	  <Resource Include="Resources\logo_bzhd.png" />
+	  <Resource Include="Resources\logo_bzhd_w.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

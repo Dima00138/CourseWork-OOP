@@ -1,0 +1,38 @@
+﻿<Application x:Class="CourseWork.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CourseWork"
+             xmlns:viewModel="clr-namespace:CourseWork.ViewModel"
+             xmlns:view="clr-namespace:CourseWork.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="View/Login.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Inherit"
+                                     ColorAdjustment="{materialDesign:ColorAdjustment}"
+                                     PrimaryColor="Blue"
+                                     SecondaryColor="LightBlue"     
+                                      />
+                <!--!!!!!!!!!!!!! Second color Blue Grey 900-->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
+                <ResourceDictionary Source="Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
+                <view:Home/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:BoardViewModel}">
+                <view:Board/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:AdminViewModel}">
+                <view:Admin/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:OrdersViewModel}">
+                <view:Orders/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
