@@ -10,11 +10,12 @@ namespace CourseWork.Model
     {
         public int Id { get; set; }
         public int IdPassenger { get; set; }
-        public string? IdTrain { get; set; }
+        public int IdTrain { get; set; }
         public int IdVan { get; set; }
         public int SeatNumber { get; set; }
-        public string? FormWhere { get; set; }
-        public string? ToWhere { get; set; }
+        public int FromWhere { get; set; }
+        public int ToWhere { get; set; }
         public DateTime Date { get; set; }
+        public int Cost { get; set; }
     }
 }

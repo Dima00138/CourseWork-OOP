@@ -122,3 +122,5 @@ C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-w
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\Theme\Theme.baml
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\Theme\MenuButtonTheme.baml
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\Themes\Generic.baml
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\More.g.cs
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\More.baml

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseWork.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,20 @@ namespace CourseWork.View
     {
         public Admin()
         {
+            DataContext = new AdminViewModel();
             InitializeComponent();
+        }
+
+        private void Datagrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var viewModel = DataContext as AdminViewModel;
+            viewModel?.Items_Sorting(sender, e);
+        }
+
+        private void TableBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = DataContext as AdminViewModel;
+            viewModel?.Selection_Changed(sender, e);
         }
     }
 }

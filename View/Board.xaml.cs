@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseWork.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,14 @@ namespace CourseWork.View
     {
         public Board()
         {
+            DataContext = new BoardViewModel();
             InitializeComponent();
+        }
+
+        private void Datagrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var viewModel = DataContext as BoardViewModel;
+            viewModel?.Items_Sorting(sender, e);
         }
     }
 }

@@ -12,7 +12,6 @@ namespace CourseWork.Model
         public int Id { get; set; }
         public int IdTicket { get; set; }
         public DateTime DatePay { get; set; }
-        public int PaymentAmount { get; set; }
         public char Status { get; set; }
     }
 }

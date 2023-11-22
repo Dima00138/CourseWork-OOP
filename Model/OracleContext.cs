@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,14 @@ namespace CourseWork.Model
         public static void Delete()
         {
             Instance = null;
+        }
+
+        public OracleDataReader SelectQuery(OracleCommand cmd)
+        {
+            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+            conn.Open();
+            cmd.Connection = conn;
+            return cmd.ExecuteReader();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace CourseWork.Model
                     temp.IdTrain = (long)reader["Id_Train"];
                     temp.Date = (DateTime)reader["Date"];
                     temp.Route = (long)reader["Route"];
-                    temp.Frequency = (short)reader["Frequency"];
+                    temp.SetFrequency((short)reader["Frequency"]);
                     _entities.Add(temp);
                 }
                 reader.Close();

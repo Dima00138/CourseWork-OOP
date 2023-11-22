@@ -51,6 +51,7 @@ namespace CourseWork.ViewModel
             {
 
                 //OracleContext conn = OracleContext.Create(Username, Password);
+                OracleContext conn = OracleContext.Create("MANAGER", "MANAGER_PASS");
 
 
                 MainWindow w = new MainWindow();

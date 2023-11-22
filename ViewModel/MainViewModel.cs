@@ -33,6 +33,7 @@ namespace CourseWork.ViewModel
         public RelayCommand BoardViewCommand { get; set; }
         public RelayCommand AdminViewCommand { get; set; }
         public RelayCommand OrdersViewCommand { get; set; }
+        public RelayCommand MoreViewCommand { get; set; }
 
 
         public RelayCommand CloseButtonCommand { get; set; }
@@ -42,6 +43,7 @@ namespace CourseWork.ViewModel
         public BoardViewModel BoardVM { get; set; }
         public AdminViewModel AdminVM { get; set; }
         public OrdersViewModel OrdersVM { get; set; }
+        public MoreViewModel MoreVM { get; set; }
 
         public object CurrentView
         {
@@ -60,11 +62,12 @@ namespace CourseWork.ViewModel
             HomeVM = new HomeViewModel();
             BoardVM = new BoardViewModel();
             OrdersVM = new OrdersViewModel();
+            MoreVM = new MoreViewModel();
             AdminVM = new AdminViewModel();
 
             CurrentView = HomeVM;
 
-            IsAdmin = true; //OracleContext.Create().IsAdmin
+            IsAdmin = OracleContext.Create().IsAdmin;
 
             LoginViewCommand = new RelayCommand(() =>
             {
@@ -95,6 +98,12 @@ namespace CourseWork.ViewModel
             {
                 CurrentView = OrdersVM;
                 PageName = "Orders";
+            });
+
+            MoreViewCommand = new RelayCommand(() =>
+            {
+                CurrentView = MoreVM;
+                PageName = "More";
             });
 
             AdminViewCommand = new RelayCommand(() =>

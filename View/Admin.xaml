@@ -3,10 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodel="clr-namespace:CourseWork.ViewModel"
+             d:DataContext="{d:DesignInstance Type=viewmodel:AdminViewModel}"
              xmlns:local="clr-namespace:CourseWork.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Admin"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Row="0"
+                          Text="{Binding CurrentTable, Mode=TwoWay}"
+                          x:Name="TableBox"
+                          Margin="20 10 20 0"
+                          VerticalAlignment="Top"
+                          materialDesign:ComboBoxAssist.MaxLength="28"
+                          materialDesign:HintAssist.Hint="Table"
+                          materialDesign:HintAssist.HintOpacity=".26"
+                          IsEditable="False"
+                          ItemsSource="{Binding Tables}"
+                          SelectedItem="0"
+                          SelectionChanged="TableBox_SelectionChanged"/>
+        <DataGrid
+            x:Name="Datagrid"
+           Grid.Row="1"
+            Sorting="Datagrid_Sorting"
+            CanUserAddRows="True"
+            CanUserDeleteRows="True"
+            AutoGenerateColumns="True"
+          ItemsSource="{Binding Items}"
+          SelectionMode="Extended"
+          SelectionUnit="Cell"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Button x:Name="Prev"
+                    Content="&lt;"
+                    FontSize="50"
+                    Padding="0 -15 0 0"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Height="50"
+                    Command="{Binding PrevButtonCommand}"
+                    />
+            <Button x:Name="Next"
+                    Content="&gt;"
+                    FontSize="50"
+                    Margin="700 0 0 0"
+                    Padding="0 -15 0 0"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Height="50"
+                    Command="{Binding NextButtonCommand}"
+                    />
+        </StackPanel>
     </Grid>
 </UserControl>
