@@ -54,10 +54,15 @@ namespace CourseWork.Model
             Instance = null;
         }
 
-        public OracleDataReader SelectQuery(OracleCommand cmd)
+        public void SaveOpen()
         {
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
             conn.Open();
+        }
+
+        public OracleDataReader SelectQuery(OracleCommand cmd)
+        {
+            SaveOpen();
             cmd.Connection = conn;
             return cmd.ExecuteReader();
         }

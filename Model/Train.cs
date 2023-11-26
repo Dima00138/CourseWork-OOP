@@ -8,7 +8,7 @@ namespace CourseWork.Model
 {
     public class Train
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string? CategoryOfTrain { get; set; }
         public bool IsForPassengers { get; set; }
         public string? Vans { get; set; }

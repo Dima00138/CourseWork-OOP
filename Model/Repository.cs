@@ -16,9 +16,9 @@ namespace CourseWork.Model
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        T? Get(string id);
+        T? Get(int id);
         void Create(T item);
-        void Update(T item, string columnName, string newVal);
+        void Update(T item);
         void Delete(T item, string id);
 
     }
@@ -36,7 +36,7 @@ namespace CourseWork.Model
         {
             
         }
-        public void Update(T item, string columnName, string newVal)
+        public virtual void Update(T item)
         {
 
         }
@@ -46,13 +46,14 @@ namespace CourseWork.Model
 
         }
 
-        public virtual T? Get(string id)
+        public virtual T? Get(int id)
         {
             return null;
         }
 
         public virtual IEnumerable<T> GetAll()
         {
+            
             return _entities;
         }
     }
@@ -63,7 +64,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.SCHEDULE";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -71,7 +72,7 @@ namespace CourseWork.Model
                 while (reader.Read())
                 {
                     Schedule temp = new Schedule();
-                    temp.Id = reader.GetInt64(0);
+                    temp.Id = reader.GetInt32(0);
                     temp.IdTrain = reader.GetInt64(1);
                     temp.Route = reader.GetInt64(3);
                     temp.Date = reader.GetDateTime(2);
@@ -87,15 +88,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Schedule item)
+        public override void Create(Schedule item)
         {
                 int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_SCHEDULE(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_SCHEDULE(" +
                     $":idTrain, :date, :route, :frequency)";
                 insert.Parameters.Add(":idTrain", item.IdTrain);
                 insert.Parameters.Add(":date", item.Date);
@@ -111,14 +112,20 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Schedule item, string columnName, string newVal)
+        public override void Update(Schedule item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.SCHEDULE SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_SCHEDULE(" +
+                    $":id, :idTrain, :date, :route, :frequency)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":idTrain", item.IdTrain);
+                update.Parameters.Add(":date", item.Date);
+                update.Parameters.Add(":route", item.Route);
+                update.Parameters.Add(":frequency", item.GetFrequency());
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -128,12 +135,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Schedule item, string id)
+        public override void Delete(Schedule item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.SCHEDULE WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -145,12 +152,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Schedule? Get(long id)
+        public override Schedule? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Schedule> GetAll()
+        public override IEnumerable<Schedule> GetAll()
         {
             return _entities;
         }
@@ -160,7 +167,7 @@ namespace CourseWork.Model
             try
             {
                 DataSet ds = new DataSet();
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand take = _context.conn.CreateCommand();
                 take.CommandText = $"SELECT * FROM {Admin}.TAKE_SCHEDULE";
                 OracleDataAdapter adapter = new OracleDataAdapter(take);
@@ -219,7 +226,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.PASSENGERS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -242,15 +249,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Passenger item)
+        public override void Create(Passenger item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_PASSENGERS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_PASSENGERS(" +
                     $":fullName, :passport, :benefits)";
                 insert.Parameters.Add(":fullName", item.FullName);
                 insert.Parameters.Add(":passport", item.Passport);
@@ -265,14 +272,19 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Passenger item, string columnName, string newVal)
+        public override void Update(Passenger item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.PASSENGERS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_PASSENGERS(" +
+                    $":id, :fullName, :passport, :benefits)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":fullName", item.FullName);
+                update.Parameters.Add(":passport", item.Passport);
+                update.Parameters.Add(":benefits", item.Benefits);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -282,12 +294,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Passenger item, string id)
+        public override void Delete(Passenger item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.PASSENGERS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -299,12 +311,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Passenger? Get(long id)
+        public override Passenger? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Passenger> GetAll()
+        public override IEnumerable<Passenger> GetAll()
         {
             return _entities;
         }
@@ -316,7 +328,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.PAYMENTS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -339,15 +351,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Payment item)
+        public override void Create(Payment item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_PAYMENTS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_PAYMENTS(" +
                     $":idTick, :datePay, :stat)";
                 insert.Parameters.Add(":idTick", item.IdTicket);
                 insert.Parameters.Add(":datePay", item.DatePay);
@@ -362,14 +374,19 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Payment item, string columnName, string newVal)
+        public override void Update(Payment item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_PAYMENTS(" +
+                    $":id, :idTick, :datePay, :stat)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":idTick", item.IdTicket);
+                update.Parameters.Add(":datePay", item.DatePay);
+                update.Parameters.Add(":stat", item.Status);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -379,12 +396,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Payment item, string id)
+        public override void Delete(Payment item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.PAYMENTS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -396,12 +413,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Payment? Get(long id)
+        public override Payment? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Payment> GetAll()
+        public override IEnumerable<Payment> GetAll()
         {
             return _entities;
         }
@@ -413,7 +430,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.ROUTES";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -437,15 +454,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Route item)
+        public override void Create(Route item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_ROUTES(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_ROUTES(" +
                     $":depId, :arrId, :dist, :dur)";
                 insert.Parameters.Add(":depId", item.DeparturePoint);
                 insert.Parameters.Add(":arrId", item.ArrivalPoint);
@@ -461,14 +478,20 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Route item, string columnName, string newVal)
+        public override void Update(Route item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.ROUTES SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_ROUTES(" +
+                    $":id, :depId, :arrId, :dist, :dur)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":depId", item.DeparturePoint);
+                update.Parameters.Add(":arrId", item.ArrivalPoint);
+                update.Parameters.Add(":dist", item.Distance);
+                update.Parameters.Add(":dur", item.Duration);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -478,12 +501,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Route item, string id)
+        public override void Delete(Route item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.ROUTES WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -495,12 +518,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Route? Get(long id)
+        public override Route? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Route> GetAll()
+        public override IEnumerable<Route> GetAll()
         {
             return _entities;
         }
@@ -512,7 +535,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.STATIONS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -536,15 +559,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Station item)
+        public override void Create(Station item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_STATIONS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_STATIONS(" +
                     $":stName, :city, :state, :country)";
                 insert.Parameters.Add(":stName", item.StationName);
                 insert.Parameters.Add(":city", item.City);
@@ -560,14 +583,20 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Station item, string columnName, string newVal)
+        public override void Update(Station item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.STATIONS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_STATIONS(" +
+                    $":id, :stName, :city, :state, :country)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":stName", item.StationName);
+                update.Parameters.Add(":city", item.City);
+                update.Parameters.Add(":state", item.State);
+                update.Parameters.Add(":country", item.Country);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -577,12 +606,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Station item, string id)
+        public override void Delete(Station item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.STATIONS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -594,12 +623,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Station? Get(long id)
+        public override Station? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Station> GetAll()
+        public override IEnumerable<Station> GetAll()
         {
             return _entities;
         }
@@ -611,7 +640,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.STATIONS_ROUTES";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -634,15 +663,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(StationsRoute item)
+        public override void Create(StationsRoute item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_STATIONS_ROUTES(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_STATIONS_ROUTES(" +
                     $":route, :stId, :stOrder)";
                 insert.Parameters.Add(":route", item.RouteId);
                 insert.Parameters.Add(":stId", item.StationId);
@@ -657,14 +686,19 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(StationsRoute item, string columnName, string newVal)
+        public override void Update(StationsRoute item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.STATIONS_ROUTES SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_STATIONS_ROUTES(" +
+                    $":id, :route, :stId, :stOrder)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":route", item.RouteId);
+                update.Parameters.Add(":stId", item.StationId);
+                update.Parameters.Add(":stOrder", item.StationOrder);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -674,12 +708,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(StationsRoute item, string id)
+        public override void Delete(StationsRoute item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.STATIONS_ROUTES WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -691,12 +725,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual StationsRoute? Get(long id)
+        public override StationsRoute? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<StationsRoute> GetAll()
+        public override IEnumerable<StationsRoute> GetAll()
         {
             return _entities;
         }
@@ -708,7 +742,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.TICKETS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -736,15 +770,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Ticket item)
+        public override void Create(Ticket item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_TICKETS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_TICKETS(" +
                     $":passenger, :train, :van, :seatN, :from, :to. :date, :cost)";
                 insert.Parameters.Add(":passenger", item.IdPassenger);
                 insert.Parameters.Add(":train", item.IdTrain);
@@ -764,14 +798,24 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Ticket item, string columnName, string newVal)
+        public override void Update(Ticket item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.TICKETS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_TICKETS(" +
+                    $":id, :passenger, :train, :van, :seatN, :from, :to. :date, :cost)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":passenger", item.IdPassenger);
+                update.Parameters.Add(":train", item.IdTrain);
+                update.Parameters.Add(":van", item.IdVan);
+                update.Parameters.Add(":seatN", item.SeatNumber);
+                update.Parameters.Add(":from", item.FromWhere);
+                update.Parameters.Add(":to", item.ToWhere);
+                update.Parameters.Add(":date", item.Date);
+                update.Parameters.Add(":cost", item.Cost);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -781,12 +825,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Ticket item, string id)
+        public override void Delete(Ticket item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.TICKETS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -798,12 +842,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Ticket? Get(long id)
+        public override Ticket? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Ticket> GetAll()
+        public override IEnumerable<Ticket> GetAll()
         {
             return _entities;
         }
@@ -815,7 +859,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.TRAINS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -840,15 +884,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Train item)
+        public override void Create(Train item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_TRAINS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_TRAINS(" +
                     $":category, :forPas, :vans, :countVans, :parkTime)";
                 insert.Parameters.Add(":category", item.CategoryOfTrain);
                 insert.Parameters.Add(":forPas", item.IsForPassengers);
@@ -865,14 +909,21 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Train item, string columnName, string newVal)
+        public override void Update(Train item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.TRAINS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_TRAINS(" +
+                    $":id, :category, :forPas, :vans, :countVans, :parkTime)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":category", item.CategoryOfTrain);
+                update.Parameters.Add(":forPas", item.IsForPassengers);
+                update.Parameters.Add(":vans", item.Vans);
+                update.Parameters.Add(":countVans", item.CountOfVans);
+                update.Parameters.Add(":parkTime", item.ParkingTime);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -882,12 +933,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Train item, string id)
+        public override void Delete(Train item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.TRAINS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -899,12 +950,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Train? Get(long id)
+        public override Train? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Train> GetAll()
+        public override IEnumerable<Train> GetAll()
         {
             return _entities;
         }
@@ -916,7 +967,7 @@ namespace CourseWork.Model
         {
             try
             {
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand getAll = _context.conn.CreateCommand();
                 getAll.CommandText = $"SELECT * FROM {Admin}.VANS";
                 getAll.CommandType = System.Data.CommandType.Text;
@@ -939,15 +990,15 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Create(Van item)
+        public override void Create(Van item)
         {
             int result = 0;
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
-                insert.CommandText = $"EXEC {Admin}.INSERT_VANS(" +
+                insert.CommandText = $"CALL {Admin}.INSERT_VANS(" +
                     $":type, :capacity, :free)";
                 insert.Parameters.Add(":type", item.Type);
                 insert.Parameters.Add(":capacity", item.Capacity);
@@ -962,14 +1013,19 @@ namespace CourseWork.Model
             }
         }
 
-        public void Update(Van item, string columnName, string newVal)
+        public override void Update(Van item)
         {
             try
             {
                 _entities.Add(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.VANS SET {columnName} = {newVal}";
+                update.CommandText = $"CALL {Admin}.UPDATE_VANS(" +
+                    $":id, :type, :capacity, :free)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":type", item.Type);
+                update.Parameters.Add(":capacity", item.Capacity);
+                update.Parameters.Add(":free", item.IsFree);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -979,12 +1035,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual void Delete(Van item, string id)
+        public override void Delete(Van item, string id)
         {
             try
             {
                 _entities.Remove(item);
-                _context.conn.Open();
+                _context.SaveOpen();
                 OracleCommand delete = _context.conn.CreateCommand();
                 delete.CommandText = $"DELETE FROM {Admin}.VANS WHERE \"ID\" = {item.Id}";
                 delete.ExecuteNonQuery();
@@ -996,12 +1052,12 @@ namespace CourseWork.Model
             }
         }
 
-        public virtual Van? Get(long id)
+        public override Van? Get(int id)
         {
             return _entities.ToList().Find(item => item.Id == id);
         }
 
-        public virtual IEnumerable<Van> GetAll()
+        public override IEnumerable<Van> GetAll()
         {
             return _entities;
         }

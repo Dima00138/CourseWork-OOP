@@ -18,10 +18,6 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         >
 
-    <Window.DataContext>
-        <viewModel:MainViewModel/>
-    </Window.DataContext>
-
     <Window.Resources>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>

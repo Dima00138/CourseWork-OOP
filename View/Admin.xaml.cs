@@ -42,7 +42,7 @@ namespace CourseWork.View
         private void Datagrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             var viewModel = DataContext as AdminViewModel;
-            viewModel?.RowEditEnding(sender, e);
+            viewModel?.UpdateRows(sender, e);
         }
 
         private void Datagrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -54,7 +54,13 @@ namespace CourseWork.View
         private void Datagrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             var viewModel = DataContext as AdminViewModel;
-            viewModel?.UpdateRows(sender, e);
+            viewModel?.CellEditEnding(sender, e);
+        }
+
+        private void Datagrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            var viewModel = DataContext as AdminViewModel;
+            viewModel?.AddItem(sender, e);
         }
     }
 }
