@@ -12,17 +12,29 @@ namespace CourseWork.Model
         public long? IdTrain { get; set; }
         public DateTime Date { get; set; }
         public long Route { get; set; }
-        public string Frequency { get; set; } = string.Empty;
+        private string _frequency = string.Empty;
 
         public void SetFrequency(short frequency)
         {
             switch (frequency)
             {
-                case 1: Frequency = "Каждый день"; break;
-                case 2: Frequency = "Каждый нечетный день"; break;
-                case 3: Frequency = "Каждый четный день"; break;
-                case 4: Frequency = "Единожды"; break;
+                case 1: _frequency = "Каждый день"; break;
+                case 2: _frequency = "Каждый нечетный день"; break;
+                case 3: _frequency = "Каждый четный день"; break;
+                case 4: _frequency = "Единожды"; break;
             }
+        }
+
+        public short GetFrequency()
+        {
+            switch (_frequency)
+            {
+                case "Каждый день": return 1;
+                case "Каждый нечетный день": return 2;
+                case "Каждый четный день": return 3;
+                case "Единожды": return 4;
+            }
+            return -1;
         }
     }
 }

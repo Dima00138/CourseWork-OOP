@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseWork.Model
 {
-    class Train
+    public class Train
     {
         public int? Id { get; set; }
         public string? CategoryOfTrain { get; set; }

@@ -34,6 +34,9 @@
             CanUserAddRows="True"
             CanUserDeleteRows="True"
             AutoGenerateColumns="True"
+            RowEditEnding="Datagrid_RowEditEnding"
+            PreviewKeyDown="Datagrid_PreviewKeyDown"
+            CellEditEnding="Datagrid_CellEditEnding"
           ItemsSource="{Binding Items}"
           SelectionMode="Extended"
           SelectionUnit="Cell"/>

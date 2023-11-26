@@ -35,11 +35,14 @@ namespace CourseWork.ViewModel
 
         [ObservableProperty]
         public ObservableCollection<UserSchedule> _items = new ObservableCollection<UserSchedule>();
-        private OracleContext Conn { get; set; }
+        private OracleContext conn;
+
+        private ScheduleRepository rep;
 
 
         public RelayCommand PrevButtonCommand { get; set; }
         public RelayCommand NextButtonCommand { get; set; }
+
 
         public BoardViewModel()
         {
@@ -47,7 +50,9 @@ namespace CourseWork.ViewModel
             {
                 
 
-                Conn = OracleContext.Create();
+                conn = OracleContext.Create();
+
+                rep = new ScheduleRepository(conn);
 
                 GetItems();
 
@@ -73,33 +78,7 @@ namespace CourseWork.ViewModel
         private void GetItems(string Order = "ID desc")
         {
             Items.Clear();
-
-            string sql = $"SELECT * FROM MANAGER.TAKE_SCHEDULE_USER WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
-
-            using (OracleDataReader reader = Conn.SelectQuery(new OracleCommand(sql)))
-            {
-                while (reader.Read())
-                {
-                    if (reader.GetBoolean(11) == false) continue;
-
-                    UserSchedule item = new UserSchedule();
-
-                    item.Id = reader.GetInt64(0);
-                    item.IdTrain = reader.GetInt64(1);
-                    item.CategoryOfTrain = reader.GetString(2);
-                    item.DeparturePoint = reader.GetString(3);
-                    item.DepartureCity = reader.GetString(4);
-                    item.ArrivalPoint = reader.GetString(5);
-                    item.ArrivalCity = reader.GetString(6);
-                    item.Distance = reader.GetInt64(7);
-                    item.Duration = reader.GetInt64(8);
-                    item.Date = reader.GetDateTime(9);
-                    item.SetFrequency(reader.GetInt16(10));
-
-
-                    Items.Add(item);
-                }
-            }
+            rep.TakeSchedule_User(RowMin, RowMax, Order, Items);
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
