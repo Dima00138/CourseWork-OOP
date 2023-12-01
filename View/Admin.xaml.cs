@@ -39,28 +39,16 @@ namespace CourseWork.View
             viewModel?.Selection_Changed(sender, e);
         }
 
-        private void Datagrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            var viewModel = DataContext as AdminViewModel;
-            viewModel?.UpdateRows(sender, e);
-        }
-
         private void Datagrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var viewModel = DataContext as AdminViewModel;
-            viewModel?.DeleteRows(sender, e);
+            viewModel?.PreviewKeyDown(sender, e);
         }
 
         private void Datagrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             var viewModel = DataContext as AdminViewModel;
-            viewModel?.CellEditEnding(sender, e);
-        }
-
-        private void Datagrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            var viewModel = DataContext as AdminViewModel;
-            viewModel?.AddItem(sender, e);
+            viewModel?.UpdateRows(sender, e);
         }
     }
 }

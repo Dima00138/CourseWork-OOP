@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseWork.Model;
+using CourseWork.Services;
 using MaterialDesignThemes.Wpf;
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -46,7 +47,7 @@ namespace CourseWork.ViewModel
         public ObservableCollection<object> _items = new ObservableCollection<object>();
 
         [ObservableProperty]
-        private string _currentTable = "PASSENGERS";
+        private string _currentTable = "";
         [ObservableProperty]
         private ObservableCollection<DataGridColumn> columns;
 
@@ -64,7 +65,7 @@ namespace CourseWork.ViewModel
 
                 Conn = OracleContext.Create();
 
-                GetItems();
+                //GetItems();
 
                 PrevButtonCommand = new RelayCommand(() =>
                 {
@@ -168,45 +169,170 @@ namespace CourseWork.ViewModel
             GetItems($"{columnName}" + " " + sortDirection);
         }
 
-        public void UpdateRows(object sender, DataGridRowEditEndingEventArgs e)
+        public void UpdateRows(object sender, DataGridCellEditEndingEventArgs e)
         {
-            Passenger editedItem = e.Row.DataContext as Passenger;
-            Passenger item = e.Row.Item as Passenger;
-
-            if (editedItem != null)
+            switch (CurrentTable)
             {
-                if (string.IsNullOrEmpty(editedItem.FullName))
-                {
-                    MessageBox.Show("Пожалуйста, введите полное имя пассажира.");
-                    e.Cancel = true;
-                }
-                Repository<Passenger> passengerRep = new PassengerRepository(Conn);
-                passengerRep.Update(editedItem);
+                case "PASSENGERS":
+                    if (!Passenger.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "PAYMENTS":
+                    if (!Payment.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "ROUTES":
+                    if (!Route.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "SCHEDULE":
+                    if (!Schedule.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "STATIONS":
+                    if (!Station.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "STATIONS_ROUTES":
+                    if (!StationsRoute.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "TICKETS":
+                    if (!Ticket.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "TRAINS":
+                    if (!Train.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                case "VANS":
+                    if (!Van.Update(sender, e, Conn))
+                        e.Cancel = true;
+                    break;
+                default:
+                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    break;
             }
         }
 
-        public void CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        public void PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Column.Header.ToString()?.ToLower() == "id")
-            {
-                MessageBox.Show("Редактировать Id нельзя");
-                e.Cancel = true;
-                return;
-            }
-            var item = e.Row.DataContext as Passenger;
-            string? col = e.Column.Header.ToString();
-            string newVal = (e.EditingElement as TextBox).Text;
-            
+            if (e.Key == Key.Delete) DeleteRows(sender, e);
+            if (e.Key == Key.Enter) AddRow(sender); 
         }
+        
+
 
         public void DeleteRows(object sender, KeyEventArgs e)
         {
-            
+            switch (CurrentTable)
+            {
+                case "PASSENGERS":
+                    if (!Passenger.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "PAYMENTS":
+                    if (!Payment.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "ROUTES":
+                    if (!Route.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "SCHEDULE":
+                    if (!Schedule.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "STATIONS":
+                    if (!Station.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "STATIONS_ROUTES":
+                    if (!StationsRoute.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "TICKETS":
+                    if (!Ticket.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "TRAINS":
+                    if (!Train.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                case "VANS":
+                    if (!Van.Delete(sender, e, Conn))
+                        MessageBox.Show("Ошибка при удалении строки");
+                    else
+                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                    break;
+                default:
+                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    break;
+            }
         }
 
-        public void AddItem(object sender, AddingNewItemEventArgs e) 
+        public void AddRow(object sender)
         {
+            if ((sender as DataGrid).SelectedItem != null) return;
 
+                switch (CurrentTable)
+            {
+                case "PASSENGERS":
+                    if (!Passenger.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "PAYMENTS":
+                    if (!Payment.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "ROUTES":
+                    if (!Route.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "SCHEDULE":
+                    if (!Schedule.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "STATIONS":
+                    if (!Station.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "STATIONS_ROUTES":
+                    if (!StationsRoute.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "TICKETS":
+                    if (!Ticket.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "TRAINS":
+                    if (!Train.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                case "VANS":
+                    if (!Van.Insert(sender, Conn))
+                        MessageBox.Show("Ошибка при добавлении строки");
+                    break;
+                default:
+                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    break;
+            }
         }
     }
 }

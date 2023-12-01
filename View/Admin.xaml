@@ -34,13 +34,11 @@
             CanUserAddRows="True"
             CanUserDeleteRows="True"
             AutoGenerateColumns="True"
-            RowEditEnding="Datagrid_RowEditEnding"
             CellEditEnding="Datagrid_CellEditEnding"
-            AddingNewItem="Datagrid_AddingNewItem"
             PreviewKeyDown="Datagrid_PreviewKeyDown"
           ItemsSource="{Binding Items}"
           SelectionMode="Extended"
-          SelectionUnit="Cell"/>
+          SelectionUnit="CellOrRowHeader"/>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     HorizontalAlignment="Center"

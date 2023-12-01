@@ -19,7 +19,8 @@ namespace CourseWork.Model
         T? Get(int id);
         void Create(T item);
         void Update(T item);
-        void Delete(T item, string id);
+        void Update(T item, string columnName, string newVal);
+        void Delete(T item, int Id);
 
     }
     public class Repository<T> : IRepository<T> where T : class
@@ -41,7 +42,12 @@ namespace CourseWork.Model
 
         }
 
-        public virtual void Delete(T item, string id)
+        public virtual void Update(T item, string columnName, string newVal)
+        {
+
+        }
+
+        public virtual void Delete(T item, int id)
         {
 
         }
@@ -135,7 +141,26 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Schedule item, string id)
+        public override void Update(Schedule item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.SCHEDULE SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Schedule.Update Exception");
+            }
+        }
+
+
+        public override void Delete(Schedule item, int Id)
         {
             try
             {
@@ -294,7 +319,26 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Passenger item, string id)
+        public override void Update(Passenger item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.PASSENGERS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Passenger.Update Exception");
+            }
+        }
+
+        public override void Delete(Passenger item, int Id)
         {
             try
             {
@@ -396,7 +440,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Payment item, string id)
+        public override void Update(Payment item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Payment.Update Exception");
+            }
+        }
+
+        public override void Delete(Payment item, int Id)
         {
             try
             {
@@ -501,7 +563,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Route item, string id)
+        public override void Update(Route item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.ROUTES SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Route.Update Exception");
+            }
+        }
+
+        public override void Delete(Route item, int Id)
         {
             try
             {
@@ -606,7 +686,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Station item, string id)
+        public override void Update(Station item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.STATIONS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Station.Update Exception");
+            }
+        }
+
+        public override void Delete(Station item, int Id)
         {
             try
             {
@@ -708,7 +806,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(StationsRoute item, string id)
+        public override void Update(StationsRoute item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.STATIONS_ROUTES SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("StationsRoute.Update Exception");
+            }
+        }
+
+        public override void Delete(StationsRoute item, int Id)
         {
             try
             {
@@ -825,7 +941,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Ticket item, string id)
+        public override void Update(Ticket item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.TICKETS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Ticket.Update Exception");
+            }
+        }
+
+        public override void Delete(Ticket item, int Id)
         {
             try
             {
@@ -895,7 +1029,7 @@ namespace CourseWork.Model
                 insert.CommandText = $"CALL {Admin}.INSERT_TRAINS(" +
                     $":category, :forPas, :vans, :countVans, :parkTime)";
                 insert.Parameters.Add(":category", item.CategoryOfTrain);
-                insert.Parameters.Add(":forPas", item.IsForPassengers);
+                insert.Parameters.Add(":forPas", Convert.ToInt16(item.IsForPassengers));
                 insert.Parameters.Add(":vans", item.Vans);
                 insert.Parameters.Add(":countVans", item.CountOfVans);
                 insert.Parameters.Add(":parkTime", item.ParkingTime);
@@ -933,7 +1067,25 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Train item, string id)
+        public override void Update(Train item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.TRAINS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Train.Update Exception");
+            }
+        }
+
+        public override void Delete(Train item, int Id)
         {
             try
             {
@@ -1035,7 +1187,26 @@ namespace CourseWork.Model
             }
         }
 
-        public override void Delete(Van item, string id)
+        public override void Update(Van item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"UPDATE {Admin}.VANS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Van.Update Exception");
+            }
+        }
+
+        public override void Delete(Van item, int Id)
         {
             try
             {
