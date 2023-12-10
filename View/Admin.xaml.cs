@@ -36,7 +36,8 @@ namespace CourseWork.View
         private void TableBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var viewModel = DataContext as AdminViewModel;
-            viewModel?.Selection_Changed(sender, e);
+            DataGrid dg = (DataGrid)FindName("Datagridd");
+            viewModel?.Selection_Changed(sender, e, dg);
         }
 
         private void Datagrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -49,6 +50,18 @@ namespace CourseWork.View
         {
             var viewModel = DataContext as AdminViewModel;
             viewModel?.UpdateRows(sender, e);
+        }
+
+        private void Datagridd_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyType == typeof(DateTime)) // Если тип данных столбца - DateTime
+            {
+                DataGridTextColumn column = e.Column as DataGridTextColumn;
+                if (column != null)
+                {
+                    column.Binding.StringFormat = "dd/MM/yyyy hh:mm tt"; // Установите желаемый формат даты
+                }
+            }
         }
     }
 }

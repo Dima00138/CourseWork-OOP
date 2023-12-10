@@ -24,6 +24,7 @@ namespace CourseWork.ViewModel
     {
         private int _rowMin = 0;
         private int _rowMax = 50;
+        private string Order = "ID DESC";
 
         public int RowMin
         {
@@ -37,20 +38,31 @@ namespace CourseWork.ViewModel
             set { _rowMax = value; }
         }
 
-
         public string[] Tables { get; set; } = { "PASSENGERS", "PAYMENTS", "ROUTES",
                                     "SCHEDULE", "STATIONS", "STATIONS_ROUTES",
                                     "TICKETS", "TRAINS", "VANS"};
 
-
         [ObservableProperty]
-        public ObservableCollection<object> _items = new ObservableCollection<object>();
+        public ObservableCollection<Passenger> _itemsPassenger = new();
+        [ObservableProperty]
+        public ObservableCollection<Payment> _itemsPayment = new();
+        [ObservableProperty]
+        public ObservableCollection<Route> _itemsRoute = new();
+        [ObservableProperty]
+        public ObservableCollection<Schedule> _itemsSchedule = new();
+        [ObservableProperty]
+        public ObservableCollection<Station> _itemsStation = new();
+        [ObservableProperty]
+        public ObservableCollection<StationsRoute> _itemsStationsRoute = new();
+        [ObservableProperty]
+        public ObservableCollection<Ticket> _itemsTicket = new();
+        [ObservableProperty]
+        public ObservableCollection<Train> _itemsTrain = new();
+        [ObservableProperty]
+        public ObservableCollection<Van> _itemsVan = new();
 
         [ObservableProperty]
         private string _currentTable = "";
-        [ObservableProperty]
-        private ObservableCollection<DataGridColumn> columns;
-
 
         private OracleContext Conn { get; set; }
 
@@ -62,7 +74,6 @@ namespace CourseWork.ViewModel
         {
             try
             {
-
                 Conn = OracleContext.Create();
 
                 //GetItems();
@@ -86,48 +97,63 @@ namespace CourseWork.ViewModel
             { }
         }
 
-        private void GetItems(string Order = "ID desc")
+        private void GetItems(DataGrid dg = null)
         {
-            Items.Clear();
-            Items = new ObservableCollection<object>();
-
             switch (CurrentTable)
             {
                 case "PASSENGERS":
                     Repository<Passenger> passengerRep = new PassengerRepository(Conn);
-                    passengerRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsPassenger;
+                    ItemsPassenger.Clear();
+                    passengerRep.GetAll(RowMin, RowMax, Order, ItemsPassenger);
                     break;
                 case "PAYMENTS":
                     Repository<Payment> paymentRep = new PaymentRepository(Conn);
-                    paymentRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsPayment;
+                    ItemsPayment.Clear();
+                    paymentRep.GetAll(RowMin, RowMax, Order, ItemsPayment);
                     break;
                 case "ROUTES":
                     Repository<Route> routeRep = new RouteRepository(Conn);
-                    routeRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsRoute;
+                    ItemsRoute.Clear();
+                    routeRep.GetAll(RowMin, RowMax, Order, ItemsRoute);
                     break;
                 case "SCHEDULE":
                     Repository<Schedule> scheduleRep = new ScheduleRepository(Conn);
-                    scheduleRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsSchedule;
+                    ItemsSchedule.Clear();
+                    scheduleRep.GetAll(RowMin, RowMax, Order, ItemsSchedule);
                     break;
                 case "STATIONS":
                     Repository<Station> stationRep = new StationRepository(Conn);
-                    stationRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsStation;
+                    ItemsStation.Clear();
+                    stationRep.GetAll(RowMin, RowMax, Order, ItemsStation);
                     break;
                 case "STATIONS_ROUTES":
                     Repository<StationsRoute> stationsRouteRep = new StationsRouteRepository(Conn);
-                    stationsRouteRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsStationsRoute;
+                    ItemsStationsRoute.Clear();
+                    stationsRouteRep.GetAll(RowMin, RowMax, Order, ItemsStationsRoute);
                     break;
                 case "TICKETS":
                     Repository<Ticket> ticketRep = new TicketRepository(Conn);
-                    ticketRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsTicket;
+                    ItemsTicket.Clear();
+                    ticketRep.GetAll(RowMin, RowMax, Order, ItemsTicket);
                     break;
                 case "TRAINS":
                     Repository<Train> trainRep = new TrainRepository(Conn);
-                    trainRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsTrain;
+                    ItemsTrain.Clear();
+                    trainRep.GetAll(RowMin, RowMax, Order, ItemsTrain);
                     break;
                 case "VANS":
                     Repository<Van> vanRep = new VanRepository(Conn);
-                    vanRep.GetAll(RowMin, RowMax, Order, Items);
+                    if (dg != null) dg.ItemsSource = ItemsVan;
+                    ItemsVan.Clear();
+                    vanRep.GetAll(RowMin, RowMax, Order, ItemsVan);
                     break;
                 default:
                     MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
@@ -135,11 +161,12 @@ namespace CourseWork.ViewModel
             }
         }
     
-        public void Selection_Changed(object sender, SelectionChangedEventArgs e)
+        public void Selection_Changed(object sender, SelectionChangedEventArgs e, DataGrid dg)
         {
             ComboBox box = sender as ComboBox;
             CurrentTable = Tables[box.SelectedIndex];
-            GetItems();
+            Order = "ID DESC";
+            GetItems(dg);
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
@@ -156,7 +183,7 @@ namespace CourseWork.ViewModel
             if (columnName.ToUpper() == "DATE") columnName = "\"DATE\"";
             if (columnName.ToUpper() == "ID") columnName = "\"ID\"";
 
-            if (e.Column.SortDirection == ListSortDirection.Descending)
+            if (Order.Split(' ')[1].ToUpper() == "DESC")
             {
                 e.Column.SortDirection = ListSortDirection.Ascending;
                 sortDirection = "ASC";
@@ -167,7 +194,20 @@ namespace CourseWork.ViewModel
                 sortDirection = "DESC";
             }
 
-            GetItems($"{columnName}" + " " + sortDirection);
+            /*if (e.Column.SortDirection == ListSortDirection.Descending)
+            {
+                e.Column.SortDirection = ListSortDirection.Ascending;
+                sortDirection = "ASC";
+            }
+            else
+            {
+                e.Column.SortDirection = ListSortDirection.Descending;
+                sortDirection = "DESC";
+            }*/
+
+            Order = $"{columnName}" + " " + sortDirection;
+
+            GetItems();
         }
 
         public void UpdateRows(object sender, DataGridCellEditEndingEventArgs e)
@@ -232,61 +272,64 @@ namespace CourseWork.ViewModel
 
         public void DeleteRows(object sender, KeyEventArgs e)
         {
-            switch (CurrentTable)
+            MessageBoxResult res = MessageBox.Show("Вы действительно хотите удалить строку?", "Подтвердите удаление", 
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (res != MessageBoxResult.Yes) return;
+           switch (CurrentTable)
             {
                 case "PASSENGERS":
                     if (!Passenger.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsPassenger.Remove((Passenger)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "PAYMENTS":
                     if (!Payment.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsPayment.Remove((Payment)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "ROUTES":
                     if (!Route.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsRoute.Remove((Route)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "SCHEDULE":
                     if (!Schedule.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsSchedule.Remove((Schedule)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "STATIONS":
                     if (!Station.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsStation.Remove((Station)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "STATIONS_ROUTES":
                     if (!StationsRoute.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsStationsRoute.Remove((StationsRoute)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "TICKETS":
                     if (!Ticket.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsTicket.Remove((Ticket)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "TRAINS":
                     if (!Train.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsTrain.Remove((Train)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 case "VANS":
                     if (!Van.Delete(sender, e, Conn))
                         MessageBox.Show("Ошибка при удалении строки");
                     else
-                        Items.Remove((sender as DataGrid).SelectedCells[0].Item);
+                        ItemsVan.Remove((Van)(sender as DataGrid).SelectedCells[0].Item);
                     break;
                 default:
                     MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);

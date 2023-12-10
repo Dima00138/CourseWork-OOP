@@ -17,7 +17,7 @@ namespace CourseWork.Model
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items);
+        void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<T> Items);
         T? Get(int id);
         void Create(T item);
         void Update(T item);
@@ -65,7 +65,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public virtual void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public virtual void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<T> Items)
         {
             
         }
@@ -159,10 +159,15 @@ namespace CourseWork.Model
                 if (convertedString.Contains("DATE"))
                 {
                     DateTime dateValue;
-                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
-                    update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                    DateTime.TryParseExact(newVal, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    if (dateValue == DateTime.MinValue)
+                    {
+                        MessageBox.Show("Неверно введена дата,\n Правильный формат: 'dd/MM/yyyy hh:mm tt'", "Ошибка в дате", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        return;
+                    }
+                    update.CommandText = $"UPDATE {Admin}.SCHEDULE SET \"{convertedString}\" = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
                 }
-                else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                else update.CommandText = $"UPDATE {Admin}.SCHEDULE SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -200,7 +205,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Schedule> Items)
         {
             try
             {
@@ -443,7 +448,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Passenger> Items)
         {
             try
             {
@@ -556,7 +561,12 @@ namespace CourseWork.Model
                 if (convertedString.Contains("DATE"))
                 {
                     DateTime dateValue;
-                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    DateTime.TryParseExact(newVal, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    if (dateValue == DateTime.MinValue)
+                    {
+                        MessageBox.Show("Неверно введена дата,\n Правильный формат: 'dd/MM/yyyy hh:mm tt'", "Ошибка в дате", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        return;
+                    }
                     update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
                 }
                 else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
@@ -596,7 +606,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Payment> Items)
         {
             try
             {
@@ -746,7 +756,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Route> Items)
         {
             try
             {
@@ -897,7 +907,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Station> Items)
         {
             try
             {
@@ -1045,7 +1055,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<StationsRoute> Items)
         {
             try
             {
@@ -1173,10 +1183,15 @@ namespace CourseWork.Model
                 if (convertedString.Contains("DATE"))
                 {
                     DateTime dateValue;
-                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
-                    update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                    DateTime.TryParseExact(newVal, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    if (dateValue == DateTime.MinValue)
+                    {
+                        MessageBox.Show("Неверно введена дата,\n Правильный формат: 'dd/MM/yyyy hh:mm tt'", "Ошибка в дате", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        return;
+                    }
+                    update.CommandText = $"UPDATE {Admin}.TICKETS SET \"{convertedString}\" = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
                 }
-                else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                else update.CommandText = $"UPDATE {Admin}.TICKETS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -1213,7 +1228,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Ticket> Items)
         {
             try
             {
@@ -1371,7 +1386,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Train> Items)
         {
             try
             {
@@ -1521,7 +1536,7 @@ namespace CourseWork.Model
             return _entities;
         }
 
-        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<Van> Items)
         {
             try
             {

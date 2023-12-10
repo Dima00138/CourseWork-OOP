@@ -28,15 +28,16 @@
                           SelectedItem="0"
                           SelectionChanged="TableBox_SelectionChanged"/>
         <DataGrid
-            x:Name="Datagrid"
+            x:Name="Datagridd"
            Grid.Row="1"
             Sorting="Datagrid_Sorting"
             CanUserAddRows="True"
             CanUserDeleteRows="True"
             AutoGenerateColumns="True"
+            AutoGeneratingColumn="Datagridd_AutoGeneratingColumn"
+            materialDesign:ValidationAssist.Suppress="True"
             CellEditEnding="Datagrid_CellEditEnding"
             PreviewKeyDown="Datagrid_PreviewKeyDown"
-          ItemsSource="{Binding Items}"
           SelectionMode="Extended"
           SelectionUnit="CellOrRowHeader"/>
         <StackPanel Orientation="Horizontal"
