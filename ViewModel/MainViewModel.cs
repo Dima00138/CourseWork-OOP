@@ -41,6 +41,7 @@ namespace CourseWork.ViewModel
 
         public HomeViewModel HomeVM { get; set; }
         public BoardViewModel BoardVM { get; set; }
+        public SearchViewModel SearchVM { get; set; }
         public AdminViewModel AdminVM { get; set; }
         public OrdersViewModel OrdersVM { get; set; }
         public MoreViewModel MoreVM { get; set; }
@@ -59,11 +60,12 @@ namespace CourseWork.ViewModel
         {
             PageName = "Home";
 
-            HomeVM = new HomeViewModel();
+            HomeVM = new HomeViewModel(this);
             BoardVM = new BoardViewModel();
             OrdersVM = new OrdersViewModel();
             MoreVM = new MoreViewModel();
             AdminVM = new AdminViewModel();
+            SearchVM = new SearchViewModel();
 
             CurrentView = HomeVM;
 

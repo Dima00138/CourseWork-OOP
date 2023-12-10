@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CourseWork.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:services="clr-namespace:CourseWork.Services"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
+    <UserControl.Resources>
+        <services:TimeOnlyToStringConverter x:Key="TimeOnlyConverter" />
+        <services:DateOnlyToStringConverter x:Key="DateOnlyConverter" />
+    </UserControl.Resources>
     <Grid>
         <materialDesign:Card
             Width="450"
@@ -51,13 +56,13 @@
                             Margin="50 160 50 130">
                     <DatePicker Width="160"
                                 Padding="6 10"
-                                Text="{Binding DateBegin}"
+                                Text="{Binding DateBegin, Mode=TwoWay, Converter={StaticResource DateOnlyConverter}}"
                                 materialDesign:HintAssist.Hint="Date"
                                 FontSize="14"/>
-                    <DatePicker Width="160"
+                    <materialDesign:TimePicker Width="160"
                                 Margin="30 0 0 0"
                                 Padding="6 10"
-                                Text="{Binding DateEnd}"
+                                Text="{Binding DateEnd, Mode=TwoWay, Converter={StaticResource TimeOnlyConverter}}"
                                 materialDesign:HintAssist.Hint="Time"
                         />
                 </StackPanel>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace CourseWork.Model
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
+        void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items);
         T? Get(int id);
         void Create(T item);
         void Update(T item);
@@ -61,6 +63,11 @@ namespace CourseWork.Model
         {
             
             return _entities;
+        }
+
+        public virtual void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            
         }
     }
 
@@ -149,7 +156,13 @@ namespace CourseWork.Model
                 _entities.Add(item);
                 _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.SCHEDULE SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                if (convertedString.Contains("DATE"))
+                {
+                    DateTime dateValue;
+                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                }
+                else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -187,6 +200,34 @@ namespace CourseWork.Model
             return _entities;
         }
 
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.SCHEDULE WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Schedule temp = new Schedule();
+                    temp.Id = reader.GetInt32(0);
+                    temp.IdTrain = reader.GetInt64(1);
+                    temp.Route = reader.GetInt64(3);
+                    temp.Date = reader.GetDateTime(2);
+                    temp.SetFrequency(reader.GetInt16(4));
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
+
         public virtual DataView TakeSchedule()
         {
             try
@@ -213,6 +254,43 @@ namespace CourseWork.Model
             {
                 string sql = $"SELECT * FROM MANAGER.TAKE_SCHEDULE_USER WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
                 
+                using (OracleDataReader reader = _context.SelectQuery(new OracleCommand(sql)))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.GetBoolean(11) == false) continue;
+
+                        UserSchedule item = new UserSchedule();
+
+                        item.Id = reader.GetInt64(0);
+                        item.IdTrain = reader.GetInt64(1);
+                        item.CategoryOfTrain = reader.GetString(2);
+                        item.DeparturePoint = reader.GetString(3);
+                        item.DepartureCity = reader.GetString(4);
+                        item.ArrivalPoint = reader.GetString(5);
+                        item.ArrivalCity = reader.GetString(6);
+                        item.Distance = reader.GetInt64(7);
+                        item.Duration = reader.GetInt64(8);
+                        item.Date = reader.GetDateTime(9);
+                        item.SetFrequency(reader.GetInt16(10));
+
+
+                        Items.Add(item);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Schedule.TakeSchedule_User Exception");
+            }
+        }
+
+        public void TakeSchedule_User(int RowMin, int RowMax, string Where, string Order, ObservableCollection<UserSchedule> Items)
+        {
+            try
+            {
+                string sql = $"SELECT * FROM MANAGER.TAKE_SCHEDULE_USER WHERE {Where} AND ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+
                 using (OracleDataReader reader = _context.SelectQuery(new OracleCommand(sql)))
                 {
                     while (reader.Read())
@@ -364,6 +442,33 @@ namespace CourseWork.Model
         {
             return _entities;
         }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.PASSENGERS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Passenger temp = new Passenger();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.FullName = reader["FULL_NAME"].ToString();
+                    temp.Passport = reader["PASSPORT"].ToString();
+                    temp.Benefits = Convert.ToInt16(reader["BENEFITS"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
     }
 
     public class PaymentRepository : Repository<Payment>
@@ -448,7 +553,13 @@ namespace CourseWork.Model
                 _entities.Add(item);
                 _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                if (convertedString.Contains("DATE"))
+                {
+                    DateTime dateValue;
+                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                }
+                else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -483,6 +594,33 @@ namespace CourseWork.Model
         public override IEnumerable<Payment> GetAll()
         {
             return _entities;
+        }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.PAYMENTS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Payment temp = new Payment();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.IdTicket = Convert.ToInt32(reader["ID_TICKET"]);
+                    temp.DatePay = Convert.ToDateTime(reader["DATE_PAY"]);
+                    temp.Status = Convert.ToChar(reader["STATUS"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
         }
     }
 
@@ -607,6 +745,34 @@ namespace CourseWork.Model
         {
             return _entities;
         }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.ROUTES WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Route temp = new Route();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.DeparturePoint = Convert.ToInt32(reader["DEPARTURE_POINT"]);
+                    temp.ArrivalPoint = Convert.ToInt32(reader["ARRIVAL_POINT"]);
+                    temp.Distance = Convert.ToInt32(reader["DISTANCE"]);
+                    temp.Duration = Convert.ToInt32(reader["DURATION"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
     }
 
     public class StationRepository : Repository<Station>
@@ -730,6 +896,34 @@ namespace CourseWork.Model
         {
             return _entities;
         }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.STATIONS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Station temp = new Station();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.StationName = reader["STATION_NAME"].ToString();
+                    temp.City = reader["CITY"].ToString();
+                    temp.State = reader["STATE"].ToString();
+                    temp.Country = reader["COUNTRY"].ToString();
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
     }
 
     public class StationsRouteRepository : Repository<StationsRoute>
@@ -850,6 +1044,33 @@ namespace CourseWork.Model
         {
             return _entities;
         }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.STATIONS_ROUTES WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    StationsRoute temp = new StationsRoute();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.RouteId = Convert.ToInt32(reader["ROUTE_ID"]);
+                    temp.StationId = Convert.ToInt32(reader["STATION_ID"]);
+                    temp.StationOrder = Convert.ToInt32(reader["STATION_ORDER"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
     }
 
     public class TicketRepository : Repository<Ticket>
@@ -949,7 +1170,13 @@ namespace CourseWork.Model
                 _entities.Add(item);
                 _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
-                update.CommandText = $"UPDATE {Admin}.TICKETS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                if (convertedString.Contains("DATE"))
+                {
+                    DateTime dateValue;
+                    DateTime.TryParseExact(newVal, "MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                }
+                else update.CommandText = $"UPDATE {Admin}.PAYMENTS SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
@@ -984,6 +1211,38 @@ namespace CourseWork.Model
         public override IEnumerable<Ticket> GetAll()
         {
             return _entities;
+        }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.TICKETS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Ticket temp = new Ticket();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.IdPassenger = Convert.ToInt32(reader["ID_PASSENGER"]);
+                    temp.IdTrain = Convert.ToInt32(reader["ID_TRAIN"]);
+                    temp.IdVan = Convert.ToInt32(reader["ID_VAN"]);
+                    temp.SeatNumber = Convert.ToInt32(reader["SEAT_NUMBER"]);
+                    temp.FromWhere = Convert.ToInt32(reader["FROM_WHERE"]);
+                    temp.ToWhere = Convert.ToInt32(reader["TO_WHERE"]);
+                    temp.Date = Convert.ToDateTime(reader["DATE"]);
+                    temp.Cost = Convert.ToInt32(reader["COST"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
         }
     }
 
@@ -1111,6 +1370,35 @@ namespace CourseWork.Model
         {
             return _entities;
         }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.TRAINS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Train temp = new Train();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.CategoryOfTrain = reader["CATEGORY_OF_TRAIN"].ToString();
+                    temp.IsForPassengers = Convert.ToBoolean(reader["IS_FOR_PASSENGERS"]);
+                    temp.Vans = reader["VANS"].ToString();
+                    temp.CountOfVans = Convert.ToInt32(reader["COUNT_OF_VANS"]);
+                    temp.ParkingTime = Convert.ToInt32(reader["PARKING_TIME"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
     }
 
     public class VanRepository : Repository<Van>
@@ -1231,6 +1519,33 @@ namespace CourseWork.Model
         public override IEnumerable<Van> GetAll()
         {
             return _entities;
+        }
+
+        public override void GetAll(int RowMin, int RowMax, string Order, ObservableCollection<object> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.VANS WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    Van temp = new Van();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.Type = reader["TYPE"].ToString();
+                    temp.Capacity = Convert.ToInt32(reader["CAPACITY"]);
+                    temp.IsFree = Convert.ToBoolean(reader["IS_FREE"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
         }
     }
 }

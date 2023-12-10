@@ -30,7 +30,9 @@ namespace CourseWork.Model
             }
             if (item.Id == 0) return true;
             string? col = e.Column.Header.ToString();
-            string newVal = (e.EditingElement as TextBox).Text;
+            string newVal = "";
+            if (col.ToUpper() != "ISFORPASSENGERS") newVal = (e.EditingElement as TextBox).Text;
+            else newVal = ((e.EditingElement as CheckBox).IsChecked == true) ? "1" : "0";
             Repository<Train> Rep = new TrainRepository(Conn);
             Rep.Update(item, col, newVal);
             return true;

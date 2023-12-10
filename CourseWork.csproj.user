@@ -42,6 +42,9 @@
     <Page Update="View\Admin.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\Search.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\Board.xaml">
       <SubType>Designer</SubType>
     </Page>

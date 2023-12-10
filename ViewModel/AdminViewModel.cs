@@ -89,44 +89,45 @@ namespace CourseWork.ViewModel
         private void GetItems(string Order = "ID desc")
         {
             Items.Clear();
+            Items = new ObservableCollection<object>();
 
             switch (CurrentTable)
             {
                 case "PASSENGERS":
                     Repository<Passenger> passengerRep = new PassengerRepository(Conn);
-                    Items = new ObservableCollection<object>(passengerRep.GetAll());
+                    passengerRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "PAYMENTS":
                     Repository<Payment> paymentRep = new PaymentRepository(Conn);
-                    Items = new ObservableCollection<object>(paymentRep.GetAll());
+                    paymentRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "ROUTES":
                     Repository<Route> routeRep = new RouteRepository(Conn);
-                    Items = new ObservableCollection<object>(routeRep.GetAll());
+                    routeRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "SCHEDULE":
                     Repository<Schedule> scheduleRep = new ScheduleRepository(Conn);
-                    Items = new ObservableCollection<object>(scheduleRep.GetAll());
+                    scheduleRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "STATIONS":
                     Repository<Station> stationRep = new StationRepository(Conn);
-                    Items = new ObservableCollection<object>(stationRep.GetAll());
+                    stationRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "STATIONS_ROUTES":
                     Repository<StationsRoute> stationsRouteRep = new StationsRouteRepository(Conn);
-                    Items = new ObservableCollection<object>(stationsRouteRep.GetAll());
+                    stationsRouteRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "TICKETS":
                     Repository<Ticket> ticketRep = new TicketRepository(Conn);
-                    Items = new ObservableCollection<object>(ticketRep.GetAll());
+                    ticketRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "TRAINS":
                     Repository<Train> trainRep = new TrainRepository(Conn);
-                    Items = new ObservableCollection<object>(trainRep.GetAll());
+                    trainRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 case "VANS":
                     Repository<Van> vanRep = new VanRepository(Conn);
-                    Items = new ObservableCollection<object>(vanRep.GetAll());
+                    vanRep.GetAll(RowMin, RowMax, Order, Items);
                     break;
                 default:
                     MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
@@ -171,47 +172,53 @@ namespace CourseWork.ViewModel
 
         public void UpdateRows(object sender, DataGridCellEditEndingEventArgs e)
         {
-            switch (CurrentTable)
+            try
             {
-                case "PASSENGERS":
-                    if (!Passenger.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "PAYMENTS":
-                    if (!Payment.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "ROUTES":
-                    if (!Route.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "SCHEDULE":
-                    if (!Schedule.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "STATIONS":
-                    if (!Station.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "STATIONS_ROUTES":
-                    if (!StationsRoute.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "TICKETS":
-                    if (!Ticket.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "TRAINS":
-                    if (!Train.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                case "VANS":
-                    if (!Van.Update(sender, e, Conn))
-                        e.Cancel = true;
-                    break;
-                default:
-                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    break;
+                switch (CurrentTable)
+                {
+                    case "PASSENGERS":
+                        if (!Passenger.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "PAYMENTS":
+                        if (!Payment.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "ROUTES":
+                        if (!Route.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "SCHEDULE":
+                        if (!Schedule.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "STATIONS":
+                        if (!Station.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "STATIONS_ROUTES":
+                        if (!StationsRoute.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "TICKETS":
+                        if (!Ticket.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "TRAINS":
+                        if (!Train.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    case "VANS":
+                        if (!Van.Update(sender, e, Conn))
+                            e.Cancel = true;
+                        break;
+                    default:
+                        MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        break;
+                }
+            }catch
+            {
+                e.Cancel = true;
             }
         }
 
@@ -289,49 +296,56 @@ namespace CourseWork.ViewModel
 
         public void AddRow(object sender)
         {
-            if ((sender as DataGrid).SelectedItem != null) return;
+            try
+            {
+                if ((sender as DataGrid).SelectedItem != null) return;
 
                 switch (CurrentTable)
+                {
+                    case "PASSENGERS":
+                        if (!Passenger.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "PAYMENTS":
+                        if (!Payment.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "ROUTES":
+                        if (!Route.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "SCHEDULE":
+                        if (!Schedule.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "STATIONS":
+                        if (!Station.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "STATIONS_ROUTES":
+                        if (!StationsRoute.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "TICKETS":
+                        if (!Ticket.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "TRAINS":
+                        if (!Train.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    case "VANS":
+                        if (!Van.Insert(sender, Conn))
+                            MessageBox.Show("Ошибка при добавлении строки");
+                        break;
+                    default:
+                        MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        break;
+                }
+            }
+            catch (Exception ex)
             {
-                case "PASSENGERS":
-                    if (!Passenger.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "PAYMENTS":
-                    if (!Payment.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "ROUTES":
-                    if (!Route.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "SCHEDULE":
-                    if (!Schedule.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "STATIONS":
-                    if (!Station.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "STATIONS_ROUTES":
-                    if (!StationsRoute.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "TICKETS":
-                    if (!Ticket.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "TRAINS":
-                    if (!Train.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                case "VANS":
-                    if (!Van.Insert(sender, Conn))
-                        MessageBox.Show("Ошибка при добавлении строки");
-                    break;
-                default:
-                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    break;
+                MessageBox.Show(ex.Message, "Ошибка в INSERT.fun");
             }
         }
     }

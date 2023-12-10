@@ -124,3 +124,6 @@ C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-w
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\Themes\Generic.baml
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\More.g.cs
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\More.baml
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\Search.g.cs
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\Search.baml
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\CourseWork_Content.g.cs

@@ -89,7 +89,7 @@ namespace CourseWork.View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/CourseWork;component/view/admin.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CourseWork;V1.0.0.0;component/view/admin.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\View\Admin.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

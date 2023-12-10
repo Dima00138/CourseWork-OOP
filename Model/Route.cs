@@ -45,7 +45,7 @@ namespace CourseWork.Model
                 Repository<Route> Rep = new RouteRepository(Conn);
                 Rep.Delete(item, item.Id);
                 return true;
-            }            
+            }
             return false;
         }
 
@@ -65,6 +65,7 @@ namespace CourseWork.Model
                 return true;
             }
             return false;
+
         }
     }
 }

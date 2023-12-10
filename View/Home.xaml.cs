@@ -24,7 +24,6 @@ namespace CourseWork.View
         public Home()
         {
             InitializeComponent();
-            DataContext = new HomeViewModel();
         }
     }
 }

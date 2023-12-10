@@ -12,18 +12,20 @@ namespace CourseWork.ViewModel
 {
     internal class HomeViewModel
     {
+        private readonly MainViewModel MainVM;
         public List<string> Stations { get; set; }
         public string FromStation { get; set; } = string.Empty;
         public string ToStation { get; set; } = string.Empty;
-        public DateOnly DateBegin { get; set; } = DateOnly.MinValue;
-        public DateOnly DateEnd { get; set; } = DateOnly.MinValue;
+        public DateOnly DateBegin { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+        public TimeOnly DateEnd { get; set; }
 
         public RelayCommand SearchCommand { get; set; }
 
         private OracleContext conn;
 
-        public HomeViewModel()
+        public HomeViewModel(MainViewModel mvm)
         {
+            MainVM = mvm;
             Stations = new List<string>();
             conn = OracleContext.Create();
 
@@ -46,10 +48,26 @@ namespace CourseWork.ViewModel
                     if (ToStation.Trim() == ""
                     && FromStation.Trim() == ""
                     && (DateBegin == DateOnly.MinValue
-                    || DateEnd == DateOnly.MinValue))
+                    && DateEnd == TimeOnly.MinValue))
                     {
                         throw new Exception("Введите все данные для поиска");
                     }
+                    StringBuilder Where = new StringBuilder();
+                    Where.Append("ARRIVAL_POINT = '" + ToStation + "'");
+                    Where.Append(" AND ");
+                    Where.Append("DEPARTURE_POINT = '" + FromStation + "'");
+                    Where.Append(" AND ");
+                    if (!(DateBegin == DateOnly.MinValue
+                    && DateEnd == TimeOnly.MinValue))
+                        Where.Append("\"DATE\" BETWEEN " +
+                           "TO_DATE('" + DateBegin + "', 'DD.MM.YYYY')" + " AND " + "TO_DATE('" + DateEnd + "', 'HH24:MI')");
+                    else if (DateBegin == DateOnly.MinValue)
+                        Where.Append("\"DATE\" <= " + "TO_DATE('" + DateEnd + "', 'HH24:MI')");
+                    else
+                        Where.Append("\"DATE\" >= " + "TO_DATE('" + DateBegin + "', 'DD.MM.YYYY')");
+                    MainVM.SearchVM = new SearchViewModel(Where.ToString());
+                    MainVM.CurrentView = MainVM.SearchVM;
+                    MainVM.PageName = "Search";
                 }
                 catch (Exception ex) 
                 {
