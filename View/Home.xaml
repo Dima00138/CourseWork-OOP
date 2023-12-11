@@ -55,9 +55,11 @@
                             Grid.Row="1"
                             Margin="50 160 50 130">
                     <DatePicker Width="160"
+                                x:Name="DatePick"
                                 Padding="6 10"
                                 Text="{Binding DateBegin, Mode=TwoWay, Converter={StaticResource DateOnlyConverter}}"
                                 materialDesign:HintAssist.Hint="Date"
+                                SelectedDateFormat="Short"
                                 FontSize="14"/>
                     <materialDesign:TimePicker Width="160"
                                 Margin="30 0 0 0"

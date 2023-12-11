@@ -59,10 +59,10 @@ namespace CourseWork.ViewModel
                     Where.Append(" AND ");
                     if (!(DateBegin == DateOnly.MinValue
                     && DateEnd == TimeOnly.MinValue))
-                        Where.Append("\"DATE\" BETWEEN " +
-                           "TO_DATE('" + DateBegin + "', 'DD.MM.YYYY')" + " AND " + "TO_DATE('" + DateEnd + "', 'HH24:MI')");
+                        Where.Append("\"DATE\" >= " +
+                           "TO_DATE('" + DateBegin + " " + DateEnd.ToString("HH:mm") + "', 'MM/DD/YYYY HH24:MI')");
                     else if (DateBegin == DateOnly.MinValue)
-                        Where.Append("\"DATE\" <= " + "TO_DATE('" + DateEnd + "', 'HH24:MI')");
+                        Where.Append("\"DATE\" >= " + "TO_DATE('" + DateEnd.ToString("HH:mm") + "', 'HH24:MI')");
                     else
                         Where.Append("\"DATE\" >= " + "TO_DATE('" + DateBegin + "', 'DD.MM.YYYY')");
                     MainVM.SearchVM = new SearchViewModel(Where.ToString());

@@ -23,7 +23,6 @@ namespace CourseWork.View
     {
         public Search()
         {
-            DataContext = new SearchViewModel();
             InitializeComponent();
         }
 

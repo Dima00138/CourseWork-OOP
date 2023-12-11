@@ -65,7 +65,7 @@ namespace CourseWork.ViewModel
             OrdersVM = new OrdersViewModel();
             MoreVM = new MoreViewModel();
             AdminVM = new AdminViewModel();
-            SearchVM = new SearchViewModel();
+            SearchVM = null;
 
             CurrentView = HomeVM;
 
