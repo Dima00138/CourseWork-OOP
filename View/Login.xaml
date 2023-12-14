@@ -98,35 +98,11 @@
 
             <Grid Grid.Row="1">
 
-                <materialDesign:Card
-                    Width="350"
-                    Height="350">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding LoginText}"
-                               TextAlignment="Center"
-                               FontSize="25" FontWeight="Bold"
-                                   Margin="0 0 0 40"/>
+                <ContentControl
+                    Content="{Binding LoginView}">
 
-                        <TextBox Margin="20 20"
-                                 Text="{Binding Username, Mode=TwoWay}"
-                                 VerticalAlignment="Center"
-                                  materialDesign:HintAssist.Hint="Username"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                        <PasswordBox
-                                Margin="20 0"
-                                materialDesign:HintAssist.Hint="Password"
-                                materialDesign:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay}"
-                                materialDesign:TextFieldAssist.HasClearButton="True"
-                                Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
-                        <Button
-                            materialDesign:ButtonAssist.CornerRadius="15"
-                            Margin="50 60"
-                            Content="Войти"
-                            Command="{Binding SubmitButtonCommand}"
-                            />
-                    </StackPanel>
-                </materialDesign:Card>
-                
+                </ContentControl>
+
             </Grid>
 
         </Grid>

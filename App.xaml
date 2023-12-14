@@ -39,6 +39,12 @@
             <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
                 <view:Search/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:LoginControlViewModel}">
+                <view:LoginControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:LoginSettingsViewModel}">
+                <view:LoginSettings/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

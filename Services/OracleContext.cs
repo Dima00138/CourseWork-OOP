@@ -20,10 +20,20 @@ namespace CourseWork.Model
         {
             try
             {
-                conn = new OracleConnection(
+                if (Application.Current.Resources["connectionString"] == null )
+                {
+                    conn = new OracleConnection(
                         ConfigurationManager.ConnectionStrings["OracleDbContext"] +
                         $"User Id = {Username}; Password = {Password};"
                     );
+                }
+                else
+                {
+                    conn = new OracleConnection(
+                        Application.Current.Resources["connectionString"] +
+                        $"User Id = {Username}; Password = {Password};"
+                    );
+                }
                 conn.KeepAlive = true;
                 conn.Open();
                 conn.Close();

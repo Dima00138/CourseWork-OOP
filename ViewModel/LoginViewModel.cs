@@ -13,21 +13,36 @@ using CourseWork.View;
 
 namespace CourseWork.ViewModel
 {
-    class LoginViewModel : ObservableObject
+    partial class LoginViewModel : ObservableObject
     {
-        public String LoginText { get; set; }
-        public String Username { get; set; }
-        public String Password { get; set; }
+        [ObservableProperty]
+        private object _loginView;
+
+        public RelayCommand LoginControlCommand { get; set; }
+        public RelayCommand LoginSettingsCommand {  get; set; }
+
+        public LoginControlViewModel LoginControlVM { get; set; }
+        public LoginSettingsViewModel LoginSettingsVM { get; set; }
         public RelayCommand CloseButtonCommand { get; set; }
         public RelayCommand HideButtonCommand { get; set; }
-        public RelayCommand SubmitButtonCommand { get; set; }
+
         public LoginViewModel()
         {
-            LoginText = "Вход";
-            Username = "";
-            Password = "";
+            LoginControlVM = new LoginControlViewModel(this);
+            LoginSettingsVM = new LoginSettingsViewModel(this);
+            
+            LoginView = LoginControlVM;
 
-            SubmitButtonCommand = new RelayCommand(SubmitButton_Click);
+            LoginControlCommand = new RelayCommand(() =>
+            {
+                LoginView = LoginControlVM;
+            });
+
+            LoginSettingsCommand = new RelayCommand(() =>
+            {
+                LoginView = LoginSettingsVM;
+            });
+
             CloseButtonCommand = new RelayCommand(CloseButton_Click);
             HideButtonCommand = new RelayCommand(HideButton_Click);
         }
@@ -41,33 +56,6 @@ namespace CourseWork.ViewModel
         {
             Application.Current.MainWindow.WindowState
                 = WindowState.Minimized;
-        }
-
-        public void SubmitButton_Click()
-        {
-            if (Username == "" && Password == "") { return; }
-
-            try
-            {
-
-                OracleContext conn = OracleContext.Create(Username, Password);
-                //OracleContext conn = OracleContext.Create("USERS", "USERS_PASS");
-                //OracleContext conn = OracleContext.Create("MANAGER", "MANAGER_PASS");
-
-
-                MainWindow w = new MainWindow();
-
-                w.Show();
-                Application.Current.MainWindow.Close();
-                Application.Current.MainWindow = w;
-            }
-
-            catch
-            {
-                MessageBox.Show("Неправильный логин или пароль",
-                    "Ошибка соединения с базой данных");
-            }
-
         }
     }
 }

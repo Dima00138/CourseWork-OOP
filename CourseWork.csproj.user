@@ -19,6 +19,12 @@
     <Compile Update="View\Login.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\LoginControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\LoginSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\MainWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +46,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Admin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\LoginControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\LoginSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Search.xaml">

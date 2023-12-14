@@ -127,3 +127,7 @@ C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-w
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\Search.g.cs
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\Search.baml
 C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\CourseWork_Content.g.cs
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\LoginControl.g.cs
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\LoginSettings.g.cs
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\LoginControl.baml
+C:\Users\Dima00138\Documents\ПОИБМС-7\ООП\CourseWork\obj\Debug\net6.0-windows\View\LoginSettings.baml
