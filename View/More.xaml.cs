@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourseWork.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace CourseWork.View
         public More()
         {
             InitializeComponent();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MoreViewModel dc = DataContext as MoreViewModel;
+            //dc?.ThemeChange(sender, e);
         }
     }
 }

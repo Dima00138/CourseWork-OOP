@@ -64,7 +64,7 @@ namespace CourseWork.ViewModel
                     else if (DateBegin == DateOnly.MinValue)
                         Where.Append("\"DATE\" >= " + "TO_DATE('" + DateEnd.ToString("HH:mm") + "', 'HH24:MI')");
                     else
-                        Where.Append("\"DATE\" >= " + "TO_DATE('" + DateBegin + "', 'DD.MM.YYYY')");
+                        Where.Append("\"DATE\" >= " + "TO_DATE('" + DateBegin + "', 'MM/DD/YYYY')");
                     MainVM.SearchVM = new SearchViewModel(Where.ToString());
                     MainVM.CurrentView = MainVM.SearchVM;
                     MainVM.PageName = "Search";

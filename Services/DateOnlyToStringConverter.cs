@@ -10,7 +10,7 @@ namespace CourseWork.Services
         {
             if (value is System.DateOnly dateOnly)
             {
-                return dateOnly.ToString("d", culture);
+                return dateOnly.ToString("MM/dd/yyyy");
             }
 
             return null;

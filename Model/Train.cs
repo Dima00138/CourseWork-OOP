@@ -29,6 +29,11 @@ namespace CourseWork.Model
                 return false;
             }
             if (item.Id == 0) return true;
+            if (!Checks.CheckTrain(item))
+            {
+                MessageBox.Show("Ошибка валидации");
+                e.Cancel = true; return false;
+            }
             string? col = e.Column.Header.ToString();
             string newVal = "";
             if (col.ToUpper() != "ISFORPASSENGERS") newVal = (e.EditingElement as TextBox).Text;
@@ -62,6 +67,7 @@ namespace CourseWork.Model
                 if (!Checks.CheckTrain(item))
                 {
                     MessageBox.Show("Ошибка валидации");
+                    return false;
                 }
                 Repository<Train> Rep = new TrainRepository(Conn);
                 Rep.Create(item);

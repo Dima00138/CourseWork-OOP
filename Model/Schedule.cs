@@ -16,22 +16,22 @@ namespace CourseWork.Model
         public long? IdTrain { get; set; }
         public DateTime Date { get; set; }
         public long Route { get; set; }
-        private string _frequency = string.Empty;
+        public string Frequency {  get; set; } = string.Empty;
 
         public void SetFrequency(short frequency)
         {
             switch (frequency)
             {
-                case 1: _frequency = "Каждый день"; break;
-                case 2: _frequency = "Каждый нечетный день"; break;
-                case 3: _frequency = "Каждый четный день"; break;
-                case 4: _frequency = "Единожды"; break;
+                case 1: Frequency = "Каждый день"; break;
+                case 2: Frequency = "Каждый нечетный день"; break;
+                case 3: Frequency = "Каждый четный день"; break;
+                case 4: Frequency = "Единожды"; break;
             }
         }
 
         public short GetFrequency()
         {
-            switch (_frequency)
+            switch (Frequency)
             {
                 case "Каждый день": return 1;
                 case "Каждый нечетный день": return 2;
@@ -51,6 +51,11 @@ namespace CourseWork.Model
                 return false;
             }
             if (item.Id == 0) return true;
+            if (!Checks.CheckSchedule(item))
+            {
+                MessageBox.Show("Ошибка валидации");
+                e.Cancel = true; return false;
+            }
             string? col = e.Column.Header.ToString();
             string newVal = (e.EditingElement as TextBox).Text;
             Repository<Schedule> Rep = new ScheduleRepository(Conn);
@@ -82,6 +87,7 @@ namespace CourseWork.Model
                 if (!Checks.CheckSchedule(item))
                 {
                     MessageBox.Show("Ошибка валидации");
+                    return false;
                 }
                 Repository<Schedule> Rep = new ScheduleRepository(Conn);
                 Rep.Create(item);

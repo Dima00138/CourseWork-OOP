@@ -33,6 +33,11 @@ namespace CourseWork.Model
                 return false;
             }
             if (item.Id == 0) return true;
+            if (!Checks.CheckVan(item))
+            {
+                MessageBox.Show("Ошибка валидации");
+                e.Cancel = true; return false;
+            }
             string? col = e.Column.Header.ToString();
             string newVal;
             if (col.ToUpper() != "ISFREE") newVal = (e.EditingElement as TextBox).Text;
@@ -66,6 +71,7 @@ namespace CourseWork.Model
                 if (!Checks.CheckVan(item))
                 {
                     MessageBox.Show("Ошибка валидации");
+                    return false;
                 }
                 Repository<Van> Rep = new VanRepository(Conn);
                 Rep.Create(item);

@@ -1,4 +1,5 @@
-﻿using CourseWork.ViewModel;
+﻿using CourseWork.Services;
+using CourseWork.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,11 +57,14 @@ namespace CourseWork.View
         {
             if (e.PropertyType == typeof(DateTime)) // Если тип данных столбца - DateTime
             {
-                DataGridTextColumn column = e.Column as DataGridTextColumn;
-                if (column != null)
+                DataGridTextColumn dataGridTextColumn = new DataGridTextColumn();
+                dataGridTextColumn.Header = e.Column.Header;
+                dataGridTextColumn.Binding = new Binding(e.PropertyName)
                 {
-                    column.Binding.StringFormat = "dd/MM/yyyy hh:mm tt"; // Установите желаемый формат даты
-                }
+                    Converter = new DateTimeToStringConverter(), // Ваш конвертер даты
+                    StringFormat = "dd/MM/yyyy hh:mm tt" // Формат даты
+                };
+                e.Column = dataGridTextColumn;
             }
         }
     }

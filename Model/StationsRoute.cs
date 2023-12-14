@@ -27,6 +27,11 @@ namespace CourseWork.Model
                 return false;
             }
             if (item.Id == 0) return true;
+            if (!Checks.CheckStationRoute(item))
+            {
+                MessageBox.Show("Ошибка валидации");
+                e.Cancel = true; return false;
+            }
             string? col = e.Column.Header.ToString();
             string newVal = (e.EditingElement as TextBox).Text;
             Repository<StationsRoute> Rep = new StationsRouteRepository(Conn);
@@ -58,6 +63,7 @@ namespace CourseWork.Model
                 if (!Checks.CheckStationRoute(item))
                 {
                     MessageBox.Show("Ошибка валидации");
+                    return false;
                 }
                 Repository<StationsRoute> Rep = new StationsRouteRepository(Conn);
                 Rep.Create(item);

@@ -103,16 +103,16 @@ namespace CourseWork.Model
 
         public override void Create(Schedule item)
         {
-                int result = 0;
+            int result = 0;
             try
             {
                 _entities.Add(item);
                 _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
                 insert.CommandText = $"CALL {Admin}.INSERT_SCHEDULE(" +
-                    $":idTrain, :date, :route, :frequency)";
+                    $":idTrain, :dat, :route, :frequency)";
                 insert.Parameters.Add(":idTrain", item.IdTrain);
-                insert.Parameters.Add(":date", item.Date);
+                insert.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
                 insert.Parameters.Add(":route", item.Route);
                 insert.Parameters.Add(":frequency", item.GetFrequency());
                 insert.ExecuteNonQuery();
@@ -133,10 +133,10 @@ namespace CourseWork.Model
                 _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
                 update.CommandText = $"CALL {Admin}.UPDATE_SCHEDULE(" +
-                    $":id, :idTrain, :date, :route, :frequency)";
+                    $":id, :idTrain, :dat, :route, :frequency)";
                 update.Parameters.Add(":id", item.Id);
                 update.Parameters.Add(":idTrain", item.IdTrain);
-                update.Parameters.Add(":date", item.Date);
+                update.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
                 update.Parameters.Add(":route", item.Route);
                 update.Parameters.Add(":frequency", item.GetFrequency());
                 update.ExecuteNonQuery();
@@ -166,6 +166,10 @@ namespace CourseWork.Model
                         return;
                     }
                     update.CommandText = $"UPDATE {Admin}.SCHEDULE SET \"{convertedString}\" = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                }
+                else if (convertedString.Contains("FREQUENCY"))
+                {
+                    update.CommandText = $"UPDATE {Admin}.SCHEDULE SET \"{convertedString}\" = {item.GetFrequency()} WHERE ID = {item.Id}";
                 }
                 else update.CommandText = $"UPDATE {Admin}.SCHEDULE SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
                 update.ExecuteNonQuery();
@@ -516,7 +520,7 @@ namespace CourseWork.Model
                 insert.CommandText = $"CALL {Admin}.INSERT_PAYMENTS(" +
                     $":idTick, :datePay, :stat)";
                 insert.Parameters.Add(":idTick", item.IdTicket);
-                insert.Parameters.Add(":datePay", item.DatePay);
+                insert.Parameters.Add(":datePay", OracleDbType.Date, item.DatePay, ParameterDirection.Input);
                 insert.Parameters.Add(":stat", item.Status);
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
@@ -539,7 +543,7 @@ namespace CourseWork.Model
                     $":id, :idTick, :datePay, :stat)";
                 update.Parameters.Add(":id", item.Id);
                 update.Parameters.Add(":idTick", item.IdTicket);
-                update.Parameters.Add(":datePay", item.DatePay);
+                update.Parameters.Add(":datePay", OracleDbType.Date, item.DatePay, ParameterDirection.Input);
                 update.Parameters.Add(":stat", item.Status);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
@@ -1126,14 +1130,14 @@ namespace CourseWork.Model
                 _context.SaveOpen();
                 OracleCommand insert = _context.conn.CreateCommand();
                 insert.CommandText = $"CALL {Admin}.INSERT_TICKETS(" +
-                    $":passenger, :train, :van, :seatN, :from, :to. :date, :cost)";
+                    $":passenger, :train, :van, :seatN, :from, :to. :dat, :cost)";
                 insert.Parameters.Add(":passenger", item.IdPassenger);
                 insert.Parameters.Add(":train", item.IdTrain);
                 insert.Parameters.Add(":van", item.IdVan);
                 insert.Parameters.Add(":seatN", item.SeatNumber);
                 insert.Parameters.Add(":from", item.FromWhere);
                 insert.Parameters.Add(":to", item.ToWhere);
-                insert.Parameters.Add(":date", item.Date);
+                insert.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
                 insert.Parameters.Add(":cost", item.Cost);
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
@@ -1153,7 +1157,7 @@ namespace CourseWork.Model
                 _context.SaveOpen();
                 OracleCommand update = _context.conn.CreateCommand();
                 update.CommandText = $"CALL {Admin}.UPDATE_TICKETS(" +
-                    $":id, :passenger, :train, :van, :seatN, :from, :to. :date, :cost)";
+                    $":id, :passenger, :train, :van, :seatN, :from, :to. :dat, :cost)";
                 update.Parameters.Add(":id", item.Id);
                 update.Parameters.Add(":passenger", item.IdPassenger);
                 update.Parameters.Add(":train", item.IdTrain);
@@ -1161,7 +1165,7 @@ namespace CourseWork.Model
                 update.Parameters.Add(":seatN", item.SeatNumber);
                 update.Parameters.Add(":from", item.FromWhere);
                 update.Parameters.Add(":to", item.ToWhere);
-                update.Parameters.Add(":date", item.Date);
+                update.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
                 update.Parameters.Add(":cost", item.Cost);
                 update.ExecuteNonQuery();
                 _context.conn.Close();
@@ -1249,6 +1253,197 @@ namespace CourseWork.Model
                     temp.ToWhere = Convert.ToInt32(reader["TO_WHERE"]);
                     temp.Date = Convert.ToDateTime(reader["DATE"]);
                     temp.Cost = Convert.ToInt32(reader["COST"]);
+                    Items.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
+    }
+
+    public class OrdersRepository : Repository<TakeTicket>
+    {
+        public OrdersRepository(OracleContext con) : base(con)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                getAll.CommandText = $"SELECT * FROM {Admin}.TAKE_TICKET";
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    TakeTicket temp = new TakeTicket();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.IdPassenger = Convert.ToInt32(reader["ID_PASSENGER"]);
+                    temp.IdTrain = Convert.ToInt32(reader["ID_TRAIN"]);
+                    temp.IdVan = Convert.ToInt32(reader["ID_VAN"]);
+                    temp.SeatNumber = Convert.ToInt32(reader["SEAT_NUMBER"]);
+                    temp.FromWhere = Convert.ToInt32(reader["FROM_WHERE"]);
+                    temp.ToWhere = Convert.ToInt32(reader["TO_WHERE"]);
+                    temp.Date = Convert.ToDateTime(reader["DATE"]);
+                    temp.Cost = Convert.ToInt32(reader["COST"]);
+                    temp.DatePay = Convert.ToDateTime(reader["DATE_PAY"]);
+                    temp.Status = Convert.ToChar(reader["STATUS"]);
+                    _entities.Add(temp);
+                }
+                reader.Close();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой данных");
+            }
+        }
+
+        public override void Create(TakeTicket item)
+        {
+            int result = 0;
+            try
+            {
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand insert = _context.conn.CreateCommand();
+                insert.CommandText = $"CALL {Admin}.INSERT_TAKE_TICKET(:passenger, :train, :van, :seatN, :fromW, :toW, :dat, :cos, :dateP, :stat)";
+                insert.Parameters.Add(":passenger", item.IdPassenger);
+                insert.Parameters.Add(":train", item.IdTrain);
+                insert.Parameters.Add(":van", item.IdVan);
+                insert.Parameters.Add(":seatN", item.SeatNumber);
+                insert.Parameters.Add(":fromW", item.FromWhere);
+                insert.Parameters.Add(":toW", item.ToWhere);
+                insert.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
+                insert.Parameters.Add(":cos", item.Cost);
+                insert.Parameters.Add(":dateP", OracleDbType.Date, item.DatePay, ParameterDirection.Input);
+                insert.Parameters.Add(":stat", item.Status);
+                insert.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show($"TAKE_TICKET.Create Exception," +
+                    $"Insert {Convert.ToBoolean(result)}");
+            }
+        }
+
+        public override void Update(TakeTicket item)
+        {
+            try
+            {
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                update.CommandText = $"CALL {Admin}.TAKE_TICKET(" +
+                    $":id, :passenger, :train, :van, :seatN, :fromW, :toW, :dat, :cost, :dateP, :status)";
+                update.Parameters.Add(":id", item.Id);
+                update.Parameters.Add(":passenger", item.IdPassenger);
+                update.Parameters.Add(":train", item.IdTrain);
+                update.Parameters.Add(":van", item.IdVan);
+                update.Parameters.Add(":seatN", item.SeatNumber);
+                update.Parameters.Add(":fromW", item.FromWhere);
+                update.Parameters.Add(":toW", item.ToWhere);
+                update.Parameters.Add(":dat", OracleDbType.Date, item.Date, ParameterDirection.Input);
+                update.Parameters.Add(":cost", item.Cost);
+                update.Parameters.Add(":dateP", OracleDbType.Date, item.DatePay, ParameterDirection.Input);
+                update.Parameters.Add(":status", item.Status);
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Take_Ticket.Update Exception");
+            }
+        }
+
+        public override void Update(TakeTicket item, string columnName, string newVal)
+        {
+            try
+            {
+                string convertedString = string.Concat(columnName.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToUpper();
+                _entities.Add(item);
+                _context.SaveOpen();
+                OracleCommand update = _context.conn.CreateCommand();
+                if (convertedString.Contains("DATE"))
+                {
+                    DateTime dateValue;
+                    DateTime.TryParseExact(newVal, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                    if (dateValue == DateTime.MinValue)
+                    {
+                        MessageBox.Show("Неверно введена дата,\n Правильный формат: 'dd/MM/yyyy hh:mm tt'", "Ошибка в дате", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        return;
+                    }
+                    update.CommandText = $"UPDATE {Admin}.TAKE_TICKET SET \"{convertedString}\" = TO_DATE('{dateValue.ToString("dd/MM/yyyy HH:mm")}', 'DD/MM/YYYY HH24:MI') WHERE ID = {item.Id}";
+                }
+                else update.CommandText = $"UPDATE {Admin}.TAKE_TICKET SET {convertedString} = '{newVal}' WHERE ID = {item.Id}";
+                update.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("TAKE_TICKET.Update Exception");
+            }
+        }
+
+        public override void Delete(TakeTicket item, int Id)
+        {
+            try
+            {
+                _entities.Remove(item);
+                _context.SaveOpen();
+                OracleCommand delete = _context.conn.CreateCommand();
+                delete.CommandText = $"DELETE FROM {Admin}.TAKE_TICKET WHERE \"ID\" = {item.Id}";
+                delete.ExecuteNonQuery();
+                _context.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("TAKE_TICKET.Delete Exception");
+            }
+        }
+
+        public override TakeTicket? Get(int id)
+        {
+            return _entities.ToList().Find(item => item.Id == id);
+        }
+
+        public override IEnumerable<TakeTicket> GetAll()
+        {
+            return _entities;
+        }
+
+        public void GetAll(int RowMin, int RowMax, string IdPas, string Order, ObservableCollection<TakeTicket> Items)
+        {
+            try
+            {
+                _context.SaveOpen();
+                OracleCommand getAll = _context.conn.CreateCommand();
+                if (IdPas.Trim() == "")
+                    getAll.CommandText = $"SELECT * FROM {Admin}.TAKE_TICKET WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} ORDER BY {Order}";
+                else
+                {
+                    getAll.CommandText = $"SELECT * FROM {Admin}.TAKE_TICKET WHERE ROWNUM > {RowMin} AND ROWNUM <= {RowMax} " +
+                    $"AND ID_PASSENGER = {IdPas} ORDER BY {Order}";
+                }
+                getAll.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader = getAll.ExecuteReader();
+                while (reader.Read())
+                {
+                    TakeTicket temp = new TakeTicket();
+                    temp.Id = Convert.ToInt32(reader["ID"]);
+                    temp.IdPassenger = Convert.ToInt32(reader["ID_PASSENGER"]);
+                    temp.IdTrain = Convert.ToInt32(reader["ID_TRAIN"]);
+                    temp.IdVan = Convert.ToInt32(reader["ID_VAN"]);
+                    temp.SeatNumber = Convert.ToInt32(reader["SEAT_NUMBER"]);
+                    temp.FromWhere = Convert.ToInt32(reader["FROM_WHERE"]);
+                    temp.ToWhere = Convert.ToInt32(reader["TO_WHERE"]);
+                    temp.Date = Convert.ToDateTime(reader["DATE"]);
+                    temp.Cost = Convert.ToInt32(reader["COST"]);
+                    temp.DatePay = Convert.ToDateTime(reader["DATE_PAY"]);
+                    temp.Status = Convert.ToChar(reader["STATUS"]);
                     Items.Add(temp);
                 }
                 reader.Close();
@@ -1457,7 +1652,7 @@ namespace CourseWork.Model
                     $":type, :capacity, :free)";
                 insert.Parameters.Add(":type", item.Type);
                 insert.Parameters.Add(":capacity", item.Capacity);
-                insert.Parameters.Add(":free", item.IsFree);
+                insert.Parameters.Add(":free", item.IsFree ? 1 : 0);
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }

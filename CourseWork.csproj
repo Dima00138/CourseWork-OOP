@@ -5,9 +5,9 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <ApplicationIcon>Resources\32710682.ico</ApplicationIcon>
     <PackageIcon>32710682.ico</PackageIcon>
+    <StartupObject>CourseWork.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

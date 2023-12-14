@@ -28,6 +28,11 @@ namespace CourseWork.Model
                 return false;
             }
             if (item.Id == 0) return true;
+            if (!Checks.CheckPayment(item))
+            {
+                MessageBox.Show("Ошибка валидации");
+                e.Cancel = true; return false;
+            }
             string? col = e.Column.Header.ToString();
             string newVal = (e.EditingElement as TextBox).Text;
             Repository<Payment> Rep = new PaymentRepository(Conn);
@@ -59,6 +64,7 @@ namespace CourseWork.Model
                 if (!Checks.CheckPayment(item))
                 {
                     MessageBox.Show("Ошибка валидации");
+                    return false;
                 }
                 Repository<Payment> Rep = new PaymentRepository(Conn);
                 Rep.Create(item);

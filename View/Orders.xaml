@@ -3,10 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodel="clr-namespace:CourseWork.ViewModel"
+             d:DataContext="{d:DesignInstance Type=viewmodel:OrdersViewModel}"
              xmlns:local="clr-namespace:CourseWork.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Orders"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <TextBox Text="{Binding SearchPassenger}" Margin="20 10 200 10"/>
+        <Button HorizontalAlignment="Right" Margin="0 0 10 0"
+                Content="Search"
+                Command="{Binding SearchButtonCommand}"/>
+        <DataGrid
+                x:Name="Datagridd"
+                Grid.Row="1"
+                Sorting="Datagrid_Sorting"
+                CanUserAddRows="True"
+                CanUserDeleteRows="True"
+                AutoGenerateColumns="True"
+                AutoGeneratingColumn="Datagridd_AutoGeneratingColumn"
+                materialDesign:ValidationAssist.Suppress="True"
+                CellEditEnding="Datagrid_CellEditEnding"
+                PreviewKeyDown="Datagrid_PreviewKeyDown"
+                SelectionMode="Extended"
+                ItemsSource="{Binding Items}"
+                SelectionUnit="CellOrRowHeader"/>
+        <StackPanel Orientation="Horizontal"
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <Button x:Name="Prev"
+                Content="&lt;"
+                FontSize="50"
+                Padding="0 -15 0 0"
+                Style="{StaticResource MaterialDesignIconButton}"
+                Height="50"
+                Command="{Binding PrevButtonCommand}"
+                />
+            <Button x:Name="Next"
+                Content="&gt;"
+                FontSize="50"
+                Margin="700 0 0 0"
+                Padding="0 -15 0 0"
+                Style="{StaticResource MaterialDesignIconButton}"
+                Height="50"
+                Command="{Binding NextButtonCommand}"
+                />
+        </StackPanel>
     </Grid>
 </UserControl>
