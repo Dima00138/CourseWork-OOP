@@ -86,6 +86,7 @@ namespace CourseWork.ViewModel
 
             HomeViewCommand = new RelayCommand(() =>
             {
+                HomeVM = new HomeViewModel(this);
                 CurrentView = HomeVM;
                 PageName = "Home";
             });

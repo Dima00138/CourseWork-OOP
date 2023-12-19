@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CourseWork.ViewModel
@@ -59,17 +60,31 @@ namespace CourseWork.ViewModel
 
                 PrevButtonCommand = new RelayCommand(() =>
                 {
-                    if (RowMin <= 0) return;
-                    RowMin -= 50;
-                    RowMax -= 50;
-                    GetItems(Where, Order);
+                    try
+                    {
+                        if (RowMin <= 0) return;
+                        RowMin -= 50;
+                        RowMax -= 50;
+                        GetItems(Where, Order);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                 });
                 NextButtonCommand = new RelayCommand(() =>
                 {
-                    RowMin += 50;
-                    RowMax += 50;
-                    GetItems(Where, Order);
+                    try
+                    {
+                        RowMin += 50;
+                        RowMax += 50;
+                        GetItems(Where, Order);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 });
             }
             catch
@@ -78,35 +93,50 @@ namespace CourseWork.ViewModel
 
         private void GetItems(string Where, string Order = "ID desc")
         {
-            Items.Clear();
-            rep.TakeSchedule_User(RowMin, RowMax, Where, Order, Items);
+            try
+            {
+                Items.Clear();
+                rep.TakeSchedule_User(RowMin, RowMax, Where, Order, Items);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка получения данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
         {
-            e.Handled = true;
-
-            string columnNameUnusable = e.Column.SortMemberPath;
-            string sortDirection;
-
-            string[] substrings = Regex.Split(columnNameUnusable, @"(?<!^)(?=[A-Z])");
-
-            string columnName = string.Join("_", substrings);
-
-            if (columnName.ToUpper() == "DATE") columnName = "\"DATE\"";
-            if (columnName.ToUpper() == "ID") columnName = "\"ID\"";
-
-            if (e.Column.SortDirection == ListSortDirection.Descending)
+            try
             {
-                e.Column.SortDirection = ListSortDirection.Ascending;
-                sortDirection = "ASC";
-            }else
-            {
-                e.Column.SortDirection = ListSortDirection.Descending;
-                sortDirection = "DESC";
+                e.Handled = true;
+
+                string columnNameUnusable = e.Column.SortMemberPath;
+                string sortDirection;
+
+                string[] substrings = Regex.Split(columnNameUnusable, @"(?<!^)(?=[A-Z])");
+
+                string columnName = string.Join("_", substrings);
+
+                if (columnName.ToUpper() == "DATE") columnName = "\"DATE\"";
+                if (columnName.ToUpper() == "ID") columnName = "\"ID\"";
+
+                if (e.Column.SortDirection == ListSortDirection.Descending)
+                {
+                    e.Column.SortDirection = ListSortDirection.Ascending;
+                    sortDirection = "ASC";
+                }
+                else
+                {
+                    e.Column.SortDirection = ListSortDirection.Descending;
+                    sortDirection = "DESC";
+                }
+                Order = $"{columnName}" + " " + sortDirection;
+                GetItems(Where, Order);
             }
-            Order = $"{columnName}" + " " + sortDirection;
-            GetItems(Where, Order);
+            catch
+            {
+                MessageBox.Show("Ошибка сортировки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

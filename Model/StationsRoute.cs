@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using CourseWork.Services;
+using MaterialDesignThemes.Wpf;
+using System.Collections.ObjectModel;
 
 namespace CourseWork.Model
 {
@@ -17,23 +19,43 @@ namespace CourseWork.Model
         public int StationId { get; set; }
         public int StationOrder { get; set; }
 
-        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn)
+        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn, ObservableCollection<StationsRoute> Items)
         {
             var item = e.Row.DataContext as StationsRoute;
-            if (e.Column.Header.ToString()?.ToLower() == "id")
+            string? col = e.Column.Header.ToString();
+            string newVal = (e.EditingElement as TextBox).Text;
+            if (col?.ToLower() == "id")
             {
                 MessageBox.Show("Редактировать Id нельзя");
                 e.Cancel = true;
                 return false;
             }
-            if (item.Id == 0) return true;
+            try
+            {
+                if (Items.IndexOf(item) == -1) { return false; }
+                switch (col?.ToLower())
+                {
+                    case "routeid":
+                        Items[Items.IndexOf(item)].RouteId = Convert.ToInt32(newVal);
+                        break;
+                    case "stationid":
+                        Items[Items.IndexOf(item)].StationId = Convert.ToInt32(newVal);
+                        break;
+                    case "stationorder":
+                        Items[Items.IndexOf(item)].StationOrder = Convert.ToInt32(newVal);
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            if (item?.Id == 0) return true;
             if (!Checks.CheckStationRoute(item))
             {
                 MessageBox.Show("Ошибка валидации");
                 e.Cancel = true; return false;
             }
-            string? col = e.Column.Header.ToString();
-            string newVal = (e.EditingElement as TextBox).Text;
             Repository<StationsRoute> Rep = new StationsRouteRepository(Conn);
             Rep.Update(item, col, newVal);
             return true;
@@ -56,7 +78,7 @@ namespace CourseWork.Model
         public static bool Insert(object sender, OracleContext Conn)
         {
             DataGrid dataGrid = (DataGrid)sender;
-            var item = dataGrid.Items[dataGrid.Items.Count - 2] as StationsRoute;
+            var item = dataGrid.SelectedCells[0].Item as StationsRoute;
 
             if (item.Id == 0)
             {

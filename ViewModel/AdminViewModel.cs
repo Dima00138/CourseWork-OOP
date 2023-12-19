@@ -80,17 +80,31 @@ namespace CourseWork.ViewModel
 
                 PrevButtonCommand = new RelayCommand(() =>
                 {
+                    try
+                    {
                     if (RowMin <= 0) return;
                     RowMin -= 50;
                     RowMax -= 50;
                     GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                 });
                 NextButtonCommand = new RelayCommand(() =>
                 {
+                    try
+                    {
                     RowMin += 50;
                     RowMax += 50;
                     GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 });
             }
             catch
@@ -99,78 +113,94 @@ namespace CourseWork.ViewModel
 
         private void GetItems(DataGrid dg = null)
         {
-            switch (CurrentTable)
+            try
             {
-                case "PASSENGERS":
-                    Repository<Passenger> passengerRep = new PassengerRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsPassenger;
-                    ItemsPassenger.Clear();
-                    passengerRep.GetAll(RowMin, RowMax, Order, ItemsPassenger);
-                    break;
-                case "PAYMENTS":
-                    Repository<Payment> paymentRep = new PaymentRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsPayment;
-                    ItemsPayment.Clear();
-                    paymentRep.GetAll(RowMin, RowMax, Order, ItemsPayment);
-                    break;
-                case "ROUTES":
-                    Repository<Route> routeRep = new RouteRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsRoute;
-                    ItemsRoute.Clear();
-                    routeRep.GetAll(RowMin, RowMax, Order, ItemsRoute);
-                    break;
-                case "SCHEDULE":
-                    Repository<Schedule> scheduleRep = new ScheduleRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsSchedule;
-                    ItemsSchedule.Clear();
-                    scheduleRep.GetAll(RowMin, RowMax, Order, ItemsSchedule);
-                    break;
-                case "STATIONS":
-                    Repository<Station> stationRep = new StationRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsStation;
-                    ItemsStation.Clear();
-                    stationRep.GetAll(RowMin, RowMax, Order, ItemsStation);
-                    break;
-                case "STATIONS_ROUTES":
-                    Repository<StationsRoute> stationsRouteRep = new StationsRouteRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsStationsRoute;
-                    ItemsStationsRoute.Clear();
-                    stationsRouteRep.GetAll(RowMin, RowMax, Order, ItemsStationsRoute);
-                    break;
-                case "TICKETS":
-                    Repository<Ticket> ticketRep = new TicketRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsTicket;
-                    ItemsTicket.Clear();
-                    ticketRep.GetAll(RowMin, RowMax, Order, ItemsTicket);
-                    break;
-                case "TRAINS":
-                    Repository<Train> trainRep = new TrainRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsTrain;
-                    ItemsTrain.Clear();
-                    trainRep.GetAll(RowMin, RowMax, Order, ItemsTrain);
-                    break;
-                case "VANS":
-                    Repository<Van> vanRep = new VanRepository(Conn);
-                    if (dg != null) dg.ItemsSource = ItemsVan;
-                    ItemsVan.Clear();
-                    vanRep.GetAll(RowMin, RowMax, Order, ItemsVan);
-                    break;
-                default:
-                    MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    break;
+                switch (CurrentTable)
+                {
+                    case "PASSENGERS":
+                        Repository<Passenger> passengerRep = new PassengerRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsPassenger;
+                        ItemsPassenger.Clear();
+                        passengerRep.GetAll(RowMin, RowMax, Order, ItemsPassenger);
+                        break;
+                    case "PAYMENTS":
+                        Repository<Payment> paymentRep = new PaymentRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsPayment;
+                        ItemsPayment.Clear();
+                        paymentRep.GetAll(RowMin, RowMax, Order, ItemsPayment);
+                        break;
+                    case "ROUTES":
+                        Repository<Route> routeRep = new RouteRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsRoute;
+                        ItemsRoute.Clear();
+                        routeRep.GetAll(RowMin, RowMax, Order, ItemsRoute);
+                        break;
+                    case "SCHEDULE":
+                        Repository<Schedule> scheduleRep = new ScheduleRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsSchedule;
+                        ItemsSchedule.Clear();
+                        scheduleRep.GetAll(RowMin, RowMax, Order, ItemsSchedule);
+                        break;
+                    case "STATIONS":
+                        Repository<Station> stationRep = new StationRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsStation;
+                        ItemsStation.Clear();
+                        stationRep.GetAll(RowMin, RowMax, Order, ItemsStation);
+                        break;
+                    case "STATIONS_ROUTES":
+                        Repository<StationsRoute> stationsRouteRep = new StationsRouteRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsStationsRoute;
+                        ItemsStationsRoute.Clear();
+                        stationsRouteRep.GetAll(RowMin, RowMax, Order, ItemsStationsRoute);
+                        break;
+                    case "TICKETS":
+                        Repository<Ticket> ticketRep = new TicketRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsTicket;
+                        ItemsTicket.Clear();
+                        ticketRep.GetAll(RowMin, RowMax, Order, ItemsTicket);
+                        break;
+                    case "TRAINS":
+                        Repository<Train> trainRep = new TrainRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsTrain;
+                        ItemsTrain.Clear();
+                        trainRep.GetAll(RowMin, RowMax, Order, ItemsTrain);
+                        break;
+                    case "VANS":
+                        Repository<Van> vanRep = new VanRepository(Conn);
+                        if (dg != null) dg.ItemsSource = ItemsVan;
+                        ItemsVan.Clear();
+                        vanRep.GetAll(RowMin, RowMax, Order, ItemsVan);
+                        break;
+                    default:
+                        MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                        break;
+                }
             }
-        }
+            catch
+            {
+                MessageBox.Show("Ошибка получения данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+}
     
         public void Selection_Changed(object sender, SelectionChangedEventArgs e, DataGrid dg)
         {
+            try
+            {
             ComboBox box = sender as ComboBox;
             CurrentTable = Tables[box.SelectedIndex];
             Order = "ID DESC";
             GetItems(dg);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка изменения выбранного элемента", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
         {
+            try
+            {
             e.Handled = true;
 
             string columnNameUnusable = e.Column.SortMemberPath;
@@ -183,31 +213,25 @@ namespace CourseWork.ViewModel
             if (columnName.ToUpper() == "DATE") columnName = "\"DATE\"";
             if (columnName.ToUpper() == "ID") columnName = "\"ID\"";
 
-            if (Order.Split(' ')[1].ToUpper() == "DESC")
-            {
-                e.Column.SortDirection = ListSortDirection.Ascending;
-                sortDirection = "ASC";
-            }
-            else
-            {
-                e.Column.SortDirection = ListSortDirection.Descending;
-                sortDirection = "DESC";
-            }
-
-            /*if (e.Column.SortDirection == ListSortDirection.Descending)
-            {
-                e.Column.SortDirection = ListSortDirection.Ascending;
-                sortDirection = "ASC";
-            }
-            else
-            {
-                e.Column.SortDirection = ListSortDirection.Descending;
-                sortDirection = "DESC";
-            }*/
+                if (Order.Split(' ')[1].ToUpper() == "DESC")
+                {
+                    e.Column.SortDirection = ListSortDirection.Ascending;
+                    sortDirection = "ASC";
+                }
+                else
+                {
+                    e.Column.SortDirection = ListSortDirection.Descending;
+                    sortDirection = "DESC";
+                }
 
             Order = $"{columnName}" + " " + sortDirection;
 
             GetItems();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка сортировки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void UpdateRows(object sender, DataGridCellEditEndingEventArgs e)
@@ -217,48 +241,51 @@ namespace CourseWork.ViewModel
                 switch (CurrentTable)
                 {
                     case "PASSENGERS":
-                        if (!Passenger.Update(sender, e, Conn))
+                        if (!Passenger.Update(sender, e, Conn, ItemsPassenger))
                             e.Cancel = true;
                         break;
                     case "PAYMENTS":
-                        if (!Payment.Update(sender, e, Conn))
+                        if (!Payment.Update(sender, e, Conn, ItemsPayment))
                             e.Cancel = true;
                         break;
                     case "ROUTES":
-                        if (!Route.Update(sender, e, Conn))
+                        if (!Route.Update(sender, e, Conn, ItemsRoute))
                             e.Cancel = true;
                         break;
                     case "SCHEDULE":
-                        if (!Schedule.Update(sender, e, Conn))
+                        if (!Schedule.Update(sender, e, Conn, ItemsSchedule))
                             e.Cancel = true;
                         break;
                     case "STATIONS":
-                        if (!Station.Update(sender, e, Conn))
+                        if (!Station.Update(sender, e, Conn, ItemsStation))
                             e.Cancel = true;
                         break;
                     case "STATIONS_ROUTES":
-                        if (!StationsRoute.Update(sender, e, Conn))
+                        if (!StationsRoute.Update(sender, e, Conn, ItemsStationsRoute))
                             e.Cancel = true;
                         break;
                     case "TICKETS":
-                        if (!Ticket.Update(sender, e, Conn))
+                        if (!Ticket.Update(sender, e, Conn, ItemsTicket))
                             e.Cancel = true;
                         break;
                     case "TRAINS":
-                        if (!Train.Update(sender, e, Conn))
+                        if (!Train.Update(sender, e, Conn, ItemsTrain))
                             e.Cancel = true;
                         break;
                     case "VANS":
-                        if (!Van.Update(sender, e, Conn))
+                        if (!Van.Update(sender, e, Conn, ItemsVan))
                             e.Cancel = true;
                         break;
                     default:
                         MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                         break;
                 }
-            }catch
+            }
+            catch
             {
                 e.Cancel = true;
+                MessageBox.Show("Ошибка обновления данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
@@ -272,6 +299,8 @@ namespace CourseWork.ViewModel
 
         public void DeleteRows(object sender, KeyEventArgs e)
         {
+            try
+            {
             MessageBoxResult res = MessageBox.Show("Вы действительно хотите удалить строку?", "Подтвердите удаление", 
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res != MessageBoxResult.Yes) return;
@@ -335,6 +364,11 @@ namespace CourseWork.ViewModel
                     MessageBox.Show("Не существует такой таблицы", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                     break;
             }
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка удалений данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void AddRow(object sender)
@@ -386,9 +420,9 @@ namespace CourseWork.ViewModel
                         break;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message, "Ошибка в INSERT.fun");
+                MessageBox.Show("Ошибка добавления данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -31,25 +31,34 @@ namespace CourseWork.ViewModel
 
             string sql = "SELECT STATION_NAME FROM MANAGER.STATIONS";
 
-            OracleCommand cmd = new OracleCommand(sql);
-            using (OracleDataReader reader = conn.SelectQuery(cmd))
+            try
             {
-                while (reader.Read())
+                OracleCommand cmd = new OracleCommand(sql);
+                using (OracleDataReader reader = conn.SelectQuery(cmd))
                 {
-                    Stations.Add(reader.GetString(0));
+                    while (reader.Read())
+                    {
+                        Stations.Add(reader.GetString(0));
+                    }
+                    conn.conn.Close();
                 }
-                conn.conn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка чтения данных из базы данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            SearchCommand = new RelayCommand(() =>
+    SearchCommand = new RelayCommand(() =>
             {
                 try
                 {
                     if (ToStation.Trim() == ""
                     && FromStation.Trim() == ""
-                    && (DateBegin == DateOnly.MinValue
+                    && (DateBegin <= DateOnly.FromDateTime(DateTime.Today)
                     && DateEnd == TimeOnly.MinValue))
                     {
+                        if (DateBegin < DateOnly.FromDateTime(DateTime.Today))
+                            throw new Exception("Дата не может быть раньше текущей");
                         throw new Exception("Введите все данные для поиска");
                     }
                     StringBuilder Where = new StringBuilder();

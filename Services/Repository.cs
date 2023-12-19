@@ -103,7 +103,6 @@ namespace CourseWork.Model
 
         public override void Create(Schedule item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -118,10 +117,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Schedule.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -142,9 +141,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Schedule.Update Exception");
+                MessageBox.Show($"Schedule.Update Exception {ex.Message}");
             }
         }
 
@@ -175,9 +174,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Schedule.Update Exception");
+                MessageBox.Show($"Schedule.Update Exception {ex.Message}");
             }
         }
 
@@ -193,9 +192,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Schedule.Delete Exception");
+                MessageBox.Show($"Schedule.Delete Exception {ex.Message}");
             }
         }
 
@@ -288,9 +287,9 @@ namespace CourseWork.Model
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Schedule.TakeSchedule_User Exception");
+                MessageBox.Show($"Schedule.TakeSchedule_User Exception\n{ex.Message}");
             }
         }
 
@@ -325,9 +324,9 @@ namespace CourseWork.Model
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Schedule.TakeSchedule_User Exception");
+                MessageBox.Show($"Schedule.TakeSchedule_User Exception\n{ex.Message}");
             }
         }
     }
@@ -363,7 +362,6 @@ namespace CourseWork.Model
 
         public override void Create(Passenger item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -377,10 +375,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Passenger.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -400,9 +398,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Passenger.Update Exception");
+                MessageBox.Show($"Passenger.Update Exception {ex.Message}");
             }
         }
 
@@ -419,9 +417,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Passenger.Update Exception");
+                MessageBox.Show($"Passenger.Update Exception {ex.Message}");
             }
         }
 
@@ -436,9 +434,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Passenger.Delete Exception");
+                MessageBox.Show($"Passenger.Delete Exception {ex.Message}");
             }
         }
 
@@ -511,7 +509,6 @@ namespace CourseWork.Model
 
         public override void Create(Payment item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -525,10 +522,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Payment.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -548,9 +545,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Payment.Update Exception");
+                MessageBox.Show($"Payment.Update Exception {ex.Message}");
             }
         }
 
@@ -577,9 +574,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Payment.Update Exception");
+                MessageBox.Show($"Payment.Update Exception {ex.Message}");
             }
         }
 
@@ -594,9 +591,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Payment.Delete Exception");
+                MessageBox.Show($"Payment.Delete Exception {ex.Message}");
             }
         }
 
@@ -670,7 +667,6 @@ namespace CourseWork.Model
 
         public override void Create(Route item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -685,10 +681,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Route.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -709,9 +705,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Route.Update Exception");
+                MessageBox.Show($"Route.Update Exception {ex.Message}");
             }
         }
 
@@ -727,9 +723,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Route.Update Exception");
+                MessageBox.Show($"Route.Update Exception {ex.Message}");
             }
         }
 
@@ -744,9 +740,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Route.Delete Exception");
+                MessageBox.Show($"Route.Delete Exception {ex.Message}");
             }
         }
 
@@ -821,7 +817,6 @@ namespace CourseWork.Model
 
         public override void Create(Station item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -836,10 +831,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Station.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -860,9 +855,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Station.Update Exception");
+                MessageBox.Show($"Station.Update Exception {ex.Message}");
             }
         }
 
@@ -878,9 +873,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Station.Update Exception");
+                MessageBox.Show($"Station.Update Exception {ex.Message}");
             }
         }
 
@@ -895,9 +890,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Station.Delete Exception");
+                MessageBox.Show($"Station.Delete Exception {ex.Message}");
             }
         }
 
@@ -971,7 +966,6 @@ namespace CourseWork.Model
 
         public override void Create(StationsRoute item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -985,10 +979,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"StationsRoute.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -1008,9 +1002,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("StationsRoute.Update Exception");
+                MessageBox.Show($"StationsRoute.Update Exception {ex.Message}");
             }
         }
 
@@ -1026,9 +1020,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex) 
             {
-                MessageBox.Show("StationsRoute.Update Exception");
+                MessageBox.Show($"StationsRoute.Update Exception {ex.Message}");
             }
         }
 
@@ -1043,9 +1037,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("StationsRoute.Delete Exception");
+                MessageBox.Show($"StationsRoute.Delete Exception {ex.Message}");
             }
         }
 
@@ -1123,7 +1117,6 @@ namespace CourseWork.Model
 
         public override void Create(Ticket item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -1142,10 +1135,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Ticket.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -1170,9 +1163,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ticket.Update Exception");
+                MessageBox.Show($"Ticket.Update Exception {ex.Message}");
             }
         }
 
@@ -1199,9 +1192,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ticket.Update Exception");
+                MessageBox.Show($"Ticket.Update Exception {ex.Message}");
             }
         }
 
@@ -1303,7 +1296,6 @@ namespace CourseWork.Model
 
         public override void Create(TakeTicket item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -1323,10 +1315,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"TAKE_TICKET.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -1353,9 +1345,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Take_Ticket.Update Exception");
+                MessageBox.Show($"Take_Ticket.Update Exception {ex.Message}");
             }
         }
 
@@ -1382,9 +1374,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("TAKE_TICKET.Update Exception");
+                MessageBox.Show($"TAKE_TICKET.Update Exception {ex.Message}");
             }
         }
 
@@ -1399,9 +1391,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("TAKE_TICKET.Delete Exception");
+                MessageBox.Show($"TAKE_TICKET.Delete Exception {ex.Message}");
             }
         }
 
@@ -1489,7 +1481,6 @@ namespace CourseWork.Model
 
         public override void Create(Train item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -1505,10 +1496,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Train.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"Insert {ex.Message}");
             }
         }
 
@@ -1530,9 +1521,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Train.Update Exception");
+                MessageBox.Show($"Train.Update Exception {ex.Message}");
             }
         }
 
@@ -1548,9 +1539,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Train.Update Exception");
+                MessageBox.Show($"Train.Update Exception {ex.Message}");
             }
         }
 
@@ -1565,9 +1556,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Train.Delete Exception");
+                MessageBox.Show($"Train.Delete Exception {ex.Message}");
             }
         }
 
@@ -1642,7 +1633,6 @@ namespace CourseWork.Model
 
         public override void Create(Van item)
         {
-            int result = 0;
             try
             {
                 _entities.Add(item);
@@ -1656,10 +1646,10 @@ namespace CourseWork.Model
                 insert.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 MessageBox.Show($"Van.Create Exception," +
-                    $"Insert {Convert.ToBoolean(result)}");
+                    $"{ex.Message}");
             }
         }
 
@@ -1679,9 +1669,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Van.Update Exception");
+                MessageBox.Show($"Van.Update Exception {ex.Message}");
             }
         }
 
@@ -1698,9 +1688,9 @@ namespace CourseWork.Model
                 update.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Van.Update Exception");
+                MessageBox.Show($"Van.Update Exception {ex.Message}");
             }
         }
 
@@ -1715,9 +1705,9 @@ namespace CourseWork.Model
                 delete.ExecuteNonQuery();
                 _context.conn.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Van.Delete Exception");
+                MessageBox.Show($"Van.Delete Exception {ex.Message}");
             }
         }
 

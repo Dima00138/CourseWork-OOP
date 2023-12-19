@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using CourseWork.Services;
+using MaterialDesignThemes.Wpf;
+using System.Collections.ObjectModel;
 
 namespace CourseWork.Model
 {
@@ -23,25 +25,46 @@ namespace CourseWork.Model
             set { this[i] = value; }
         }
 
-        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn)
+        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn, ObservableCollection<Van> Items)
         {
             var item = e.Row.DataContext as Van;
+            string newVal;
+            string? col = e.Column.Header.ToString();
+            if (col.ToUpper() != "ISFREE") newVal = (e.EditingElement as TextBox).Text;
+            else newVal = ((e.EditingElement as CheckBox).IsChecked == true) ? "1" : "0";
             if (e.Column.Header.ToString()?.ToLower() == "id")
             {
                 MessageBox.Show("Редактировать Id нельзя");
                 e.Cancel = true;
                 return false;
             }
-            if (item.Id == 0) return true;
+            try
+            {
+
+                if (Items.IndexOf(item) == -1) { return false; }
+                switch (col.ToLower())
+                {
+                    case "type":
+                        Items[Items.IndexOf(item)].Type = newVal;
+                        break;
+                    case "capacity":
+                        Items[Items.IndexOf(item)].Capacity = Convert.ToInt32(newVal);
+                        break;
+                    case "isfree":
+                        Items[Items.IndexOf(item)].IsFree = ((e.EditingElement as CheckBox).IsChecked == true);
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            if (item?.Id == 0) return true;
             if (!Checks.CheckVan(item))
             {
                 MessageBox.Show("Ошибка валидации");
                 e.Cancel = true; return false;
             }
-            string? col = e.Column.Header.ToString();
-            string newVal;
-            if (col.ToUpper() != "ISFREE") newVal = (e.EditingElement as TextBox).Text;
-            else newVal = ((e.EditingElement as CheckBox).IsChecked == true) ? "1" : "0";
             Repository<Van> Rep = new VanRepository(Conn);
             Rep.Update(item, col, newVal);
             return true;
@@ -64,7 +87,7 @@ namespace CourseWork.Model
         public static bool Insert(object sender, OracleContext Conn)
         {
             DataGrid dataGrid = (DataGrid)sender;
-            var item = dataGrid.Items[dataGrid.Items.Count - 2] as Van;
+            var item = dataGrid.SelectedCells[0].Item as Van;
 
             if (item.Id == 0)
             {

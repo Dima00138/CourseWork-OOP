@@ -43,8 +43,9 @@ namespace CourseWork.ViewModel
                     + ";Persist Security Info=True;";
                 ChangeSettingsCommand.Execute(this);
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
         }

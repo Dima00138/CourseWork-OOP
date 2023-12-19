@@ -28,6 +28,9 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Timoshenko_OOP.docx" />
+    <None Remove="~%24яснительная записка - Тимошенко Дмитрий 7.docx" />
+    <None Remove="Пояснительная записка - Тимошенко Дмитрий 7.docx" />
   </ItemGroup>
 
   <ItemGroup>

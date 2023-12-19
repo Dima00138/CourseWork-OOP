@@ -54,17 +54,31 @@ namespace CourseWork.ViewModel
 
                 PrevButtonCommand = new RelayCommand(() =>
                 {
+                    try
+                    {
                     if (RowMin <= 0) return;
                     RowMin -= 50;
                     RowMax -= 50;
                     GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                 });
                 NextButtonCommand = new RelayCommand(() =>
                 {
+                    try
+                    {
                     RowMin += 50;
                     RowMax += 50;
                     GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 });
                 SearchButtonCommand = new RelayCommand(() =>
                 {
@@ -86,14 +100,23 @@ namespace CourseWork.ViewModel
 
         private void GetItems(string _SearchPassenger = "")
         {
+            try
+            {
             OrdersRepository orderRep = new OrdersRepository(Conn);
             Items.Clear();
             orderRep.GetAll(RowMin, RowMax, _SearchPassenger, Order, Items);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка получения данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
         {
+            try
+            {
             e.Handled = true;
 
             string columnNameUnusable = e.Column.SortMemberPath;
@@ -120,19 +143,25 @@ namespace CourseWork.ViewModel
             Order = $"{columnName}" + " " + sortDirection;
 
             GetItems();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка сортировки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void UpdateRows(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
-                if (!TakeTicket.Update(sender, e, Conn))
+                if (!TakeTicket.Update(sender, e, Conn, Items))
                     e.Cancel = true;
 
             }
             catch
             {
                 e.Cancel = true;
+                MessageBox.Show("Ошибка обновления данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -146,16 +175,21 @@ namespace CourseWork.ViewModel
 
         public void DeleteRows(object sender, KeyEventArgs e)
         {
-            MessageBoxResult res = MessageBox.Show("Вы действительно хотите удалить строку?", "Подтвердите удаление",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (res != MessageBoxResult.Yes) return;
+            try
+            {
+                MessageBoxResult res = MessageBox.Show("Вы действительно хотите удалить строку?", "Подтвердите удаление",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res != MessageBoxResult.Yes) return;
 
-            if (!TakeTicket.Delete(sender, e, Conn))
-                MessageBox.Show("Ошибка при удалении строки");
-            else
-                Items.Remove((TakeTicket)(sender as DataGrid).SelectedCells[0].Item);
-
-
+                if (!TakeTicket.Delete(sender, e, Conn))
+                    MessageBox.Show("Ошибка при удалении строки");
+                else
+                    Items.Remove((TakeTicket)(sender as DataGrid).SelectedCells[0].Item);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка удаления данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void AddRow(object sender)
@@ -168,9 +202,9 @@ namespace CourseWork.ViewModel
                 if (!TakeTicket.Insert(sender, Conn))
                     MessageBox.Show("Ошибка при добавлении строки");
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message, "Ошибка в INSERT.fun");
+                MessageBox.Show("Ошибка добавления строки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CourseWork.ViewModel
@@ -59,16 +60,30 @@ namespace CourseWork.ViewModel
                 PrevButtonCommand = new RelayCommand(() =>
                 {
                     if (RowMin <= 0) return;
-                    RowMin -= 50;
-                    RowMax -= 50;
-                    GetItems();
+                    try
+                    {
+                        RowMin -= 50;
+                        RowMax -= 50;
+                        GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                 });
                 NextButtonCommand = new RelayCommand(() =>
                 {
+                    try
+                    {
                     RowMin += 50;
                     RowMax += 50;
                     GetItems();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка перехода на другую страницу", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 });
             }
             catch
@@ -77,12 +92,21 @@ namespace CourseWork.ViewModel
 
         private void GetItems(string Order = "ID desc")
         {
+            try
+            {
             Items.Clear();
             rep.TakeSchedule_User(RowMin, RowMax, Order, Items);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка получения данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Items_Sorting(object sender, DataGridSortingEventArgs e)
         {
+            try
+            {
             e.Handled = true;
 
             string columnNameUnusable = e.Column.SortMemberPath;
@@ -106,6 +130,11 @@ namespace CourseWork.ViewModel
             }
 
             GetItems($"{columnName}" + " " + sortDirection);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка сортировки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

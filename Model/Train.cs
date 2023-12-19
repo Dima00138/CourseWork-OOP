@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using CourseWork.Services;
+using MaterialDesignThemes.Wpf;
+using System.Collections.ObjectModel;
 
 namespace CourseWork.Model
 {
@@ -19,25 +21,51 @@ namespace CourseWork.Model
         public int ParkingTime { get; set; }
         public int CountOfVans { get; set; }
 
-        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn)
+        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn, ObservableCollection<Train> Items)
         {
             var item = e.Row.DataContext as Train;
-            if (e.Column.Header.ToString()?.ToLower() == "id")
+            string newVal;
+            string? col = e.Column.Header.ToString();
+            if (col?.ToUpper() != "ISFORPASSENGERS") newVal = (e.EditingElement as TextBox).Text;
+            else newVal = ((e.EditingElement as CheckBox).IsChecked == true) ? "1" : "0";
+            if (col?.ToLower() == "id")
             {
                 MessageBox.Show("Редактировать Id нельзя");
                 e.Cancel = true;
                 return false;
             }
-            if (item.Id == 0) return true;
+            try
+            {
+                if (Items.IndexOf(item) == -1) { return false; }
+                switch (col?.ToLower())
+                {
+                    case "categoryoftrain":
+                        Items[Items.IndexOf(item)].CategoryOfTrain = newVal;
+                        break;
+                    case "isforpassengers":
+                        Items[Items.IndexOf(item)].IsForPassengers = ((e.EditingElement as CheckBox).IsChecked == true);
+                        break;
+                    case "vans":
+                        Items[Items.IndexOf(item)].Vans = newVal;
+                        break;
+                    case "parkingtime":
+                        Items[Items.IndexOf(item)].ParkingTime = Convert.ToInt32(newVal);
+                        break;
+                    case "countofvans":
+                        Items[Items.IndexOf(item)].CountOfVans = Convert.ToInt32(newVal);
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            if (item?.Id == 0) return true;
             if (!Checks.CheckTrain(item))
             {
                 MessageBox.Show("Ошибка валидации");
                 e.Cancel = true; return false;
             }
-            string? col = e.Column.Header.ToString();
-            string newVal = "";
-            if (col.ToUpper() != "ISFORPASSENGERS") newVal = (e.EditingElement as TextBox).Text;
-            else newVal = ((e.EditingElement as CheckBox).IsChecked == true) ? "1" : "0";
             Repository<Train> Rep = new TrainRepository(Conn);
             Rep.Update(item, col, newVal);
             return true;
@@ -60,7 +88,7 @@ namespace CourseWork.Model
         public static bool Insert(object sender, OracleContext Conn)
         {
             DataGrid dataGrid = (DataGrid)sender;
-            var item = dataGrid.Items[dataGrid.Items.Count - 2] as Train;
+            var item = dataGrid.SelectedCells[0].Item as Train;
 
             if (item.Id == 0)
             {

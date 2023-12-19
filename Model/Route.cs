@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
+using System.Collections.ObjectModel;
 
 namespace CourseWork.Model
 {
@@ -18,23 +20,46 @@ namespace CourseWork.Model
         public int Distance { get; set; }
         public int Duration { get; set; }
 
-        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn)
+        public static bool Update(object sender, DataGridCellEditEndingEventArgs e, OracleContext Conn, ObservableCollection<Route> Items)
         {
             var item = e.Row.DataContext as Route;
-            if (e.Column.Header.ToString()?.ToLower() == "id")
+            string? col = e.Column.Header.ToString();
+            string newVal = (e.EditingElement as TextBox).Text;
+            if (col?.ToLower() == "id")
             {
                 MessageBox.Show("Редактировать Id нельзя");
                 e.Cancel = true;
                 return false;
             }
-            if (item.Id == 0) return true;
+            try
+            {
+                if (Items.IndexOf(item) == -1) { return false; }
+                switch (col?.ToLower())
+                {
+                    case "departurepoint":
+                        Items[Items.IndexOf(item)].DeparturePoint = Convert.ToInt32(newVal);
+                        break;
+                    case "arrivalpoint":
+                        Items[Items.IndexOf(item)].ArrivalPoint = Convert.ToInt32(newVal);
+                        break;
+                    case "distance":
+                        Items[Items.IndexOf(item)].Distance = Convert.ToInt32(newVal);
+                        break;
+                    case "duration":
+                        Items[Items.IndexOf(item)].Duration = Convert.ToInt32(newVal);
+                        break;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            if (item?.Id == 0) return true;
             if (!Checks.CheckRoute(item))
             {
                 MessageBox.Show("Ошибка валидации");
                 e.Cancel = true; return false;
             }
-            string? col = e.Column.Header.ToString();
-            string newVal = (e.EditingElement as TextBox).Text;
             Repository<Route> Rep = new RouteRepository(Conn);
             Rep.Update(item, col, newVal);
             return true;
@@ -57,7 +82,7 @@ namespace CourseWork.Model
         public static bool Insert(object sender, OracleContext Conn)
         {
             DataGrid dataGrid = (DataGrid)sender;
-            var item = dataGrid.Items[dataGrid.Items.Count - 2] as Route;
+            var item = dataGrid.SelectedCells[0].Item as Route;
 
             if (item.Id == 0)
             {
