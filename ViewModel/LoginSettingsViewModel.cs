@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -39,6 +40,12 @@ namespace CourseWork.ViewModel
 
             try
             {
+                Regex regex = new Regex(@"([A-Za-z1-9.])+:[1-9]{4,5}", RegexOptions.IgnoreCase);
+                if (!regex.IsMatch(Hostname))
+                {
+                    MessageBox.Show("Hostname должен быть заполнен по шаблону", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 Application.Current.Resources["connectionString"] = "Data Source = " + Hostname + "/" + DbName
                     + ";Persist Security Info=True;";
                 ChangeSettingsCommand.Execute(this);

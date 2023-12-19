@@ -84,6 +84,7 @@ namespace CourseWork.ViewModel
                 {
                     try
                     {
+                        if (SearchPassenger == "") GetItems();
                         string IdPas = Convert.ToInt64(SearchPassenger).ToString();
                         GetItems(IdPas);
 

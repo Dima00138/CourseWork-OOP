@@ -73,6 +73,8 @@ namespace CourseWork.ViewModel
 
             LoginViewCommand = new RelayCommand(() =>
             {
+                try
+                { 
                 CurrentView = HomeVM;
                 PageName = "Home";
 
@@ -82,37 +84,80 @@ namespace CourseWork.ViewModel
                 w.Show();
                 Application.Current.MainWindow.Close();
                 Application.Current.MainWindow = w;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             HomeViewCommand = new RelayCommand(() =>
             {
+                try
+                {
                 HomeVM = new HomeViewModel(this);
                 CurrentView = HomeVM;
                 PageName = "Home";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             BoardViewCommand = new RelayCommand(() =>
             {
-                CurrentView = BoardVM;
-                PageName = "Board";
+                try
+                {
+                    BoardVM = new BoardViewModel();
+                    CurrentView = BoardVM;
+                    PageName = "Board";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             OrdersViewCommand = new RelayCommand(() =>
             {
+                try 
+                {
+                OrdersVM = new OrdersViewModel();
                 CurrentView = OrdersVM;
                 PageName = "Orders";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             MoreViewCommand = new RelayCommand(() =>
             {
-                CurrentView = MoreVM;
-                PageName = "More";
+                try
+                {
+                    MoreVM = new MoreViewModel();
+                    CurrentView = MoreVM;
+                    PageName = "More";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             AdminViewCommand = new RelayCommand(() =>
             {
-                CurrentView = AdminVM;
-                PageName = "Admin";
+                try
+                {
+                    CurrentView = AdminVM;
+                    PageName = "Admin";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             });
 
             CloseButtonCommand = new RelayCommand(CloseButton_Click);

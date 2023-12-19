@@ -64,6 +64,9 @@ namespace CourseWork.Model
                     case "idtrain":
                         Items[Items.IndexOf(item)].IdTrain = Convert.ToInt32(newVal);
                         break;
+                    case "route":
+                        Items[Items.IndexOf(item)].Route = Convert.ToInt32(newVal);
+                        break;
                     case "date":
                         DateTime date;
                         if (DateTime.TryParseExact(newVal, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))

@@ -34,7 +34,7 @@
                     Content="Войти"
                     Command="{Binding SubmitButtonCommand}"
                     />
-                <Button Content="Изменить настройки подклчения к БД"
+                <Button Content="Изменить настройки подключения к БД"
                         FontSize="10"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Command="{Binding ChangeSettingsCommand}"/>
