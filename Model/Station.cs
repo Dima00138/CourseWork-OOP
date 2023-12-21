@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using CourseWork.Services;
-using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 
 namespace CourseWork.Model

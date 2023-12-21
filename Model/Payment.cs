@@ -1,19 +1,13 @@
 ﻿using CourseWork.Services;
-using MaterialDesignThemes.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CourseWork.Model
 {
-    //!TODO Pattern State
     public class Payment
     {
         public int Id { get; set; }

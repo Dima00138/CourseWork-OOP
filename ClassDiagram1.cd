@@ -1,332 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
   <Class Name="CourseWork.Model.Passenger">
-    <Position X="0.5" Y="0.75" Width="5.5" />
+    <Position X="0.5" Y="0.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAAAAIAAABAAAAAAAAEAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Passenger.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Payment">
-    <Position X="6.5" Y="0.75" Width="5.5" />
+    <Position X="6.25" Y="0.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAEAAAAAAAAAAAAgABAAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Payment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Route">
-    <Position X="12.5" Y="0.75" Width="5.5" />
+    <Position X="12" Y="0.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAACQAAAAAAAAAAAAAEAAABAAAAAAAgAAAA=</HashCode>
       <FileName>Model\Route.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Schedule">
-    <Position X="18.5" Y="0.75" Width="5.5" />
+    <Position X="12" Y="7" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAAAAAAACEAAAAAAAIEAAAABAAABAACAAAA=</HashCode>
       <FileName>Model\Schedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Station">
-    <Position X="0.5" Y="3.25" Width="5.5" />
+    <Position X="0.5" Y="3" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAAAAAAIAQAAAAAAAAMAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Model\Station.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.StationsRoute">
-    <Position X="6.5" Y="3.5" Width="5.5" />
+    <Position X="6.25" Y="3" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCgEAABAAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\StationsRoute.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.TakeTicket">
-    <Position X="12.5" Y="3.5" Width="5.5" />
+    <Position X="12" Y="3.25" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAEAAAAAAAAAAAIgRAAAAMAAAABgAABCAAAAAA=</HashCode>
       <FileName>Model\TakeTicket.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Ticket">
-    <Position X="13.75" Y="7.25" Width="5.5" />
+    <Position X="6.25" Y="5.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAAAAAAAAAAIARAAAAMAAAABgAABCAAAAAA=</HashCode>
       <FileName>Model\Ticket.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Train">
-    <Position X="0.5" Y="6" Width="5.5" />
+    <Position X="0.5" Y="5.75" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAQCAEAAAAAAAAAAAQAQAIAAAAOAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Train.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.UserSchedule">
-    <Position X="6.25" Y="6" Width="2.75" />
+    <Position X="17.75" Y="3.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAACQAAACAAAAIAAAIIAAABRAAABAAgAAAA=</HashCode>
       <FileName>Model\UserSchedule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.Van">
-    <Position X="18.5" Y="4.25" Width="5.5" />
+    <Position X="0.5" Y="8.5" Width="5.5" />
     <TypeIdentifier>
       <HashCode>CAQCAEAAAAAAAAAACAAAAAACAAEAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Model\Van.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CourseWork.Model.VansComposition" BaseTypeListCollapsed="true">
-    <Position X="9.25" Y="7.25" Width="4.25" />
+    <Position X="17.75" Y="0.5" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIAQIgGAAAAAA=</HashCode>
       <FileName>Model\VansComposition.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="CourseWork.BooleanToVisibilityConverter" BaseTypeListCollapsed="true">
-    <Position X="46.5" Y="2" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\BooleanToVisibilityConverter.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="CourseWork.Services.Checks">
-    <Position X="52.5" Y="2.25" Width="3" />
-    <TypeIdentifier>
-      <HashCode>AAAAAABABEAAEAIAAAAAABAAAgAAAAAAAAAAAAEAQAE=</HashCode>
-      <FileName>Services\Checks.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Services.DateOnlyToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="56" Y="2.25" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\DateOnlyToStringConverter.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="CourseWork.Services.DateTimeToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="46.5" Y="3.5" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\DateTimeToStringConverter.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="CourseWork.Services.TimeOnlyToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="56" Y="6.25" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\TimeOnlyToStringConverter.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="CourseWork.Model.OracleContext">
-    <Position X="51" Y="5.25" Width="4.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAACAUAAEIAQAAAAAAAAAA=</HashCode>
-      <FileName>Services\OracleContext.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.DeprRelayCommand" BaseTypeListCollapsed="true">
-    <Position X="56" Y="3.75" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Services\RelayCommandDeprec.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="CourseWork.Model.Repository&lt;T&gt;">
-    <Position X="34.25" Y="0.5" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAIBABAAAAAAQAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="CourseWork.Model.ScheduleRepository">
-    <Position X="20" Y="7.75" Width="7.75" />
-    <InheritanceLine Type="CourseWork.Model.Repository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true">
-      <Path>
-        <Point X="34.875" Y="3.786" />
-        <Point X="34.875" Y="7.516" />
-        <Point X="23.875" Y="7.516" />
-        <Point X="23.875" Y="7.75" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAECAEAAAgABAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.PassengerRepository">
-    <Position X="28.5" Y="4.75" Width="6" />
-    <InheritanceLine Type="CourseWork.Model.Repository&lt;T&gt;" FixedFromPoint="true">
-      <Path>
-        <Point X="34.5" Y="3.786" />
-        <Point X="34.5" Y="4.161" />
-        <Point X="31.5" Y="4.161" />
-        <Point X="31.5" Y="4.75" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.PaymentRepository">
-    <Position X="35" Y="5" Width="5.75" />
-    <InheritanceLine Type="CourseWork.Model.Repository&lt;T&gt;" FixedFromPoint="true">
-      <Path>
-        <Point X="36.438" Y="3.786" />
-        <Point X="36.438" Y="4.938" />
-        <Point X="37.875" Y="4.938" />
-        <Point X="37.875" Y="5" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.RouteRepository">
-    <Position X="35" Y="8" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.StationRepository">
-    <Position X="41" Y="11" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.StationsRouteRepository">
-    <Position X="28.5" Y="8" Width="6" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.TicketRepository">
-    <Position X="28.75" Y="11" Width="5.75" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.OrdersRepository">
-    <Position X="41" Y="5" Width="6.75" />
-    <InheritanceLine Type="CourseWork.Model.Repository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true">
-      <Path>
-        <Point X="39.5" Y="3.786" />
-        <Point X="39.5" Y="4.113" />
-        <Point X="39.58" Y="4.113" />
-        <Point X="39.58" Y="4.777" />
-        <Point X="44.375" Y="4.777" />
-        <Point X="44.375" Y="5" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.TrainRepository">
-    <Position X="35" Y="11" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.Model.VanRepository">
-    <Position X="41.25" Y="8" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.AdminViewModel">
-    <Position X="47.75" Y="8.75" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AA80ACSAgABAAJEIAIAIRAAAAAAAAgIAEAAAAAQAAIA=</HashCode>
-      <FileName>ViewModel\AdminViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.BoardViewModel">
-    <Position X="54" Y="8.75" Width="4.25" />
-    <TypeIdentifier>
-      <HashCode>AAAkACCAgAAAAIAAAIIAAAAAABQAAgAAAAAAAAAAAAA=</HashCode>
-      <FileName>ViewModel\BoardViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.HomeViewModel">
-    <Position X="67.5" Y="8" Width="3.25" />
-    <TypeIdentifier>
-      <HashCode>AAAACAgAAAAAgAAAAAAEAAAAAAQBAEAAAAAAAAEAAAA=</HashCode>
-      <FileName>ViewModel\HomeViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.LoginControlViewModel">
-    <Position X="58.75" Y="8.75" Width="3.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAQAAEAAAAAAAAQAAAAAAAgAAAAACAABAAAAAAAA=</HashCode>
-      <FileName>ViewModel\LoginControlViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.LoginSettingsViewModel">
-    <Position X="67.5" Y="11.5" Width="3.75" />
-    <TypeIdentifier>
-      <HashCode>AAAEAQAAEAAAAAACAAAAAAAAAgAAAAAAAABAAAAAAAA=</HashCode>
-      <FileName>ViewModel\LoginSettingsViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.LoginViewModel">
-    <Position X="63" Y="8" Width="3.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAABAAAAABAAAAAiQAAAAAgAAAgAAAgAAEAAAAAAA=</HashCode>
-      <FileName>ViewModel\LoginViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.MainViewModel">
-    <Position X="59" Y="11.5" Width="3.5" />
-    <TypeIdentifier>
-      <HashCode>AAAIABCDFAAACAAAAgUgQAAACEAAgCCAAAAAAwAABAA=</HashCode>
-      <FileName>ViewModel\MainViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.MoreViewModel">
-    <Position X="48.5" Y="7" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
-      <FileName>ViewModel\MoreViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.OrdersViewModel">
-    <Position X="62.75" Y="11.75" Width="4.5" />
-    <TypeIdentifier>
-      <HashCode>AA00ACCEgAAAAIAAAIAgBAAAABAAAgAAEAAAAAAAAAA=</HashCode>
-      <FileName>ViewModel\OrdersViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CourseWork.ViewModel.SearchViewModel">
-    <Position X="54" Y="12.75" Width="4.25" />
-    <TypeIdentifier>
-      <HashCode>AAEkACCAgAAAAIAAAIIAAAAAABUAAgAAAAAAAAAAAAA=</HashCode>
-      <FileName>ViewModel\SearchViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Interface Name="CourseWork.Model.IRepository&lt;T&gt;">
-    <Position X="40.25" Y="0.5" Width="5.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
-      <FileName>Services\Repository.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

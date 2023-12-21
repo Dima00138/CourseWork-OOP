@@ -5,8 +5,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\32710682.ico</ApplicationIcon>
-    <PackageIcon>32710682.ico</PackageIcon>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <StartupObject>CourseWork.App</StartupObject>
   </PropertyGroup>
 
@@ -24,6 +24,7 @@
 	  <None Remove="Resources\ticket.png" />
 	  <None Remove="Resources\logo_bzhd.png" />
 	  <None Remove="Resources\logo_bzhd_w.png" />
+	  <None Remove="Resources\icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\32710682.ico" />
+    <Content Include="Resources\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +55,7 @@
 	  <Resource Include="Resources\ticket.png" />
 	  <Resource Include="Resources\logo_bzhd.png" />
 	  <Resource Include="Resources\logo_bzhd_w.png" />
+	  <Resource Include="Resources\icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,7 +63,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\32710682.ico">
+    <None Update="Resources\icon.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Resources\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

@@ -43,10 +43,9 @@ namespace CourseWork.Model
                 }
 
             }
-            catch
+            catch (Exception ex) 
             {
-                Exception exception = new Exception();
-                throw exception;
+                throw ex;
             }
         }
 

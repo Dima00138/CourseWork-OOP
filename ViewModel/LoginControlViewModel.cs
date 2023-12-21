@@ -3,10 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CourseWork.Model;
 using CourseWork.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CourseWork.ViewModel
@@ -40,8 +36,7 @@ namespace CourseWork.ViewModel
             {
 
                 OracleContext conn = OracleContext.Create(Username, Password);
-                //OracleContext conn = OracleContext.Create("USERS", "USERS_PASS");
-                //OracleContext conn = OracleContext.Create("MANAGER", "MANAGER_PASS");
+                
 
 
                 MainWindow w = new MainWindow();
@@ -51,9 +46,9 @@ namespace CourseWork.ViewModel
                 Application.Current.MainWindow = w;
             }
 
-            catch
+            catch (Exception ex) 
             {
-                MessageBox.Show("Неправильный логин или пароль",
+                MessageBox.Show(ex.Message,
                     "Ошибка соединения с базой данных");
             }
         }
